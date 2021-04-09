@@ -9,7 +9,7 @@ interface IProduct {
     productId: number;
     title: string;
     price: string;
-    quantity: string;
+    quantity: number;
     image: string;
 }
 
@@ -22,9 +22,12 @@ interface IUpdatedListProps {
 }
 
 interface ICounterProps {
-    quantity: string;
+    quantity: number;
+    cartId: number;
+    productId: number;
 }
 
 interface IContext {
     carts: ICart[];
+    setCarts: (carts: ICart[]) => void;
 }

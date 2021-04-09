@@ -5,39 +5,51 @@ import WishList from './components/wishlist';
 import Suggestions from './components/suggestions';
 import Criterias from './components/criteria';
 import CartContext from './context/cartContext';
+import initialState from './context/cartContext';
 
 const App = (): JSX.Element => {
     const [carts, setCarts] = useState<ICart[]>([]);
+    console.log(carts);
 
     useEffect(() => {
         (async (): Promise<void> => {
-            try {
-                const response = await axios.get('https://fakestoreapi.com/carts?limit=5');
-                await response.data.forEach((cart: ICart) => {
-                    cart.products.forEach((product) => {
-                        axios.get(`https://fakestoreapi.com/products/${product.productId}`).then((response) => {
-                            product.title = response.data.title;
-                            product.price = response.data.price;
-                            product.image = response.data.image;
+            axios
+                .get('https://fakestoreapi.com/carts?limit=5')
+                .then((cartResponse) => {
+                    cartResponse.data.forEach((cart: ICart) => {
+                        cart.products.forEach((product) => {
+                            axios
+                                .get(`https://fakestoreapi.com/products/${product.productId}`)
+                                .then((productResponse) => {
+                                    product.title = productResponse.data.title;
+                                    product.price = productResponse.data.price;
+                                    product.image = productResponse.data.image;
+                                })
+                                .catch((err) => console.log(err));
                         });
                     });
-                });
-                await setCarts(response.data);
-            } catch (err) {
-                console.log(err);
-            }
+                    localStorage.setItem('Carts', JSON.stringify(cartResponse.data));
+
+                    setCarts(cartResponse.data);
+                })
+                .catch((err) => console.log(err));
         })();
     }, []);
-    console.log(carts);
 
     return (
-        <CartContext.Provider value={carts}>
-            <div className="flex flex-col space-y-16">
-                <Criterias />
-                <Suggestions />;
-                <WishList />
-            </div>
-        </CartContext.Provider>
+        <div>
+            {carts !== [] ? (
+                <CartContext.Provider value={{ carts, setCarts }}>
+                    <div className="flex flex-col space-y-16">
+                        <Criterias />
+                        <Suggestions />;
+                        <WishList />
+                    </div>
+                </CartContext.Provider>
+            ) : (
+                <div>Loading data .....</div>
+            )}
+        </div>
     );
 };
 
