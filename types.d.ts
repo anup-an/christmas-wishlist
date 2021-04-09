@@ -7,7 +7,10 @@ interface ICart {
 
 interface IProduct {
     productId: number;
-    quantity: number;
+    title: string;
+    price: string;
+    quantity: string;
+    image: string;
 }
 
 interface IWishListProps {
@@ -16,4 +19,12 @@ interface IWishListProps {
 
 interface IUpdatedListProps {
     updatedCarts: ICart[];
+}
+
+interface ICounterProps {
+    quantity: string;
+}
+
+interface IContext {
+    carts: ICart[];
 }
