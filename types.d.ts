@@ -3,6 +3,8 @@ interface ICart {
     userId: number;
     date: string;
     products: IProduct[];
+    isWellBehaved: boolean;
+    isApproved: boolean;
 }
 
 interface IProduct {
@@ -11,6 +13,7 @@ interface IProduct {
     price: string;
     quantity: number;
     image: string;
+    isFavourite: boolean;
 }
 
 interface IWishListProps {

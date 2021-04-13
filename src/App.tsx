@@ -2,37 +2,65 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './assets/main.css';
 import WishList from './components/wishlist';
-import Suggestions from './components/suggestions';
 import Criterias from './components/criteria';
 import CartContext from './context/cartContext';
-import initialState from './context/cartContext';
 
 const App = (): JSX.Element => {
     const [carts, setCarts] = useState<ICart[]>([]);
-    console.log(carts);
+
+    const getProduct = async (product: IProduct) => {
+        try {
+            const p = await axios.get(`https://fakestoreapi.com/products/${product.productId}`);
+
+            product.title = p.data.title;
+            product.image = p.data.image;
+            product.price = p.data.price;
+            return product;
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         (async (): Promise<void> => {
-            axios
-                .get('https://fakestoreapi.com/carts?limit=5')
-                .then((cartResponse) => {
-                    cartResponse.data.forEach((cart: ICart) => {
-                        cart.products.forEach((product) => {
-                            axios
-                                .get(`https://fakestoreapi.com/products/${product.productId}`)
-                                .then((productResponse) => {
-                                    product.title = productResponse.data.title;
-                                    product.price = productResponse.data.price;
-                                    product.image = productResponse.data.image;
-                                })
-                                .catch((err) => console.log(err));
-                        });
-                    });
-                    localStorage.setItem('Carts', JSON.stringify(cartResponse.data));
+            try {
+                const data = await axios.get('https://fakestoreapi.com/carts?limit=5');
 
-                    setCarts(cartResponse.data);
-                })
-                .catch((err) => console.log(err));
+                const cartData = data.data.map((cart: ICart) => {
+                    const productArray = cart.products.map((product) => getProduct(product));
+                    (async function () {
+                        for await (const val of productArray) {
+                            return val;
+                        }
+                    })();
+
+                    return {
+                        ...cart
+                    };
+                });
+                setTimeout(function () {
+                    const updatedData = cartData
+                        .map((cart: ICart, cartIndex: number) =>
+                            cartIndex === 1 || cartIndex === 3
+                                ? { ...cart, isWellBehaved: true }
+                                : { ...cart, isWellBehaved: false }
+                        )
+                        .map((cart: ICart) => ({ ...cart, isApproved: false }))
+                        .map((cart: ICart) => ({
+                            ...cart,
+                            products: cart.products.map((product: IProduct, productIndex: number) =>
+                                productIndex === 0
+                                    ? { ...product, isFavourite: true }
+                                    : { ...product, isFavourite: false }
+                            )
+                        }));
+                    localStorage.setItem('CartList', JSON.stringify(updatedData));
+
+                    setCarts([...updatedData]);
+                }, 3000);
+            } catch (error) {
+                console.log(error);
+            }
         })();
     }, []);
 
@@ -42,7 +70,6 @@ const App = (): JSX.Element => {
                 <CartContext.Provider value={{ carts, setCarts }}>
                     <div className="flex flex-col space-y-16">
                         <Criterias />
-                        <Suggestions />;
                         <WishList />
                     </div>
                 </CartContext.Provider>
