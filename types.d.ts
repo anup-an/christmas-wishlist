@@ -5,6 +5,23 @@ interface ICart {
     products: IProduct[];
     isWellBehaved: boolean;
     isApproved: boolean;
+    isInCart: boolean;
+}
+
+interface IComponentProps {
+    criteria: string;
+    setCriteria: Dispatch<SetStateAction<string>>;
+    feedback: string;
+    setFeedback: Dispatch<SetStateAction<string>>;
+    approveProduct: (productId: number, cartId: number) => void;
+    approveCart: (selectedCart: ICart) => void;
+}
+
+interface IFinalCartProps {
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    approveCart: (selectedCart: ICart) => void;
+    approveProduct: (productId: number, cartId: number) => void;
 }
 
 interface IProduct {
@@ -14,6 +31,7 @@ interface IProduct {
     quantity: number;
     image: string;
     isFavourite: boolean;
+    isApproved: boolean;
 }
 
 interface IWishListProps {

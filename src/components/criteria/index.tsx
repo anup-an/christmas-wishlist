@@ -1,119 +1,114 @@
 /* eslint-disable prefer-const */
 import React, { useContext, useState } from 'react';
+import Modal from 'react-modal';
 import CartContext from '../../context/cartContext';
+import { selectMinProduct } from '../../functions/selectEqual';
+import FinalCart from '../modals/finalCart';
 
-const Criterias: React.FC = () => {
+const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedback, approveCart, approveProduct }) => {
     const { carts, setCarts } = useContext(CartContext);
+    const list = localStorage.getItem('CartList');
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    Modal.setAppElement('#root');
 
-    const newCarts = carts.map((cart) => ({
-        ...cart,
-        products: []
-    }));
-    const oldCarts = carts.map((cart) => ({
-        ...cart
-    }));
-    // finds index of the product with minimum price from a list of products
-    const findIndex = (products: IProduct[]) => {
-        const index = products
-            .map((product) => parseFloat(product.price))
-            .indexOf(Math.min(...products.map((product) => parseFloat(product.price))));
-        return index;
-    };
-    const findCart = (cart: ICart, oldCarts: ICart[]) => {
-        const foundCart = oldCarts.filter((e) => e.id === cart.id)[0];
-        return foundCart;
+    const openModal = () => {
+        setIsOpen(true);
     };
 
-    const findMinProduct = (cart: ICart, oldCarts: ICart[]) => {
-        const MinProduct = findCart(cart, oldCarts).products.filter(
-            (product) => product === findCart(cart, oldCarts).products[findIndex(findCart(cart, oldCarts).products)]
-        );
-        return MinProduct;
+    const closeModal = () => {
+        setIsOpen(false);
     };
 
+    const oldCarts = list
+        ? JSON.parse(list).map((cart: ICart) => ({
+              ...cart
+          }))
+        : '';
+    // selects only favourite gifts from all of the carts
     const selectFavourites = () => {
         const favourites = carts.map((cart) => ({
             ...cart,
-            products: cart.products.filter((product) => product.isFavourite === true)
+            products: cart.products.map((product) =>
+                product.isFavourite === true ? { ...product, isApproved: true } : { ...product, isApproved: false }
+            )
         }));
         setCarts([...favourites]);
+        setFeedback('');
+        setCriteria('Only favourite gifts selected from the all the carts');
     };
 
-    // Returns array of carts containing only the product with minimum price
-    const getCartsMin = (oldCarts: ICart[], newCarts: ICart[]) => {
-        const x = newCarts.map((cart: ICart) => ({
-            ...cart,
-            products: [...cart.products, ...findMinProduct(cart, oldCarts)].map((product) => ({
-                ...product,
-                quantity: 1
-            }))
-        }));
-
-        const y = oldCarts.map((cart: ICart) => ({
-            ...cart,
-            products: cart.products
-                .filter((product) => product.productId !== findMinProduct(cart, oldCarts)[0].productId)
-                .map((product) => ({
-                    ...product,
-                    quantity: product.quantity - 1
-                }))
-        }));
-        const n = newCarts.map((cart) => ({
-            cart_id: cart.id,
-            num_items: cart.products.length
-        }));
-
-        return { y, x, n };
-    };
-    const optimizeEqualNumber = (oldCarts: ICart[], newCarts: ICart[]) => {
-        const updatedCarts = getCartsMin(oldCarts, newCarts);
-        const itemsArray = updatedCarts.n.map((cart) => cart.num_items);
+    const optimizeEqualNumber = (oldCarts: ICart[]) => {
+        const updatedCarts = oldCarts.map(
+            (cart: ICart) => selectMinProduct(cart, oldCarts).filter((selected) => selected.id === cart.id)[0]
+        );
+        const itemsArray = updatedCarts.map(
+            (cart) => cart.products.filter((product) => product.isApproved === true).length
+        );
         const isEqual = itemsArray.every((value) => value !== 0 && value === itemsArray[0]);
-
-        if (isEqual) {
-            optimizeEqualNumber(updatedCarts.y, updatedCarts.x);
-        } else {
-            setCarts(updatedCarts.x);
+        if (!isEqual) {
+            optimizeEqualNumber(updatedCarts);
         }
+        setCarts([...updatedCarts]);
+        setFeedback('');
 
-        /*         const arr1 = carts.x;
-        const arr2 = carts.y;
-        const cost = carts.cost;
-        const x = arr2.map((cart) => cart.products.length).reduce((a, b) => a + b);
-
-        if (cost < 500 && x !== 0) {
-            maximizeTotalNumber(arr1, arr2);
-        }
- */
+        setCriteria('Equal number of gifts with mimimum total price selected from the wishlists ');
     };
 
     return (
-        <div>
+        <div className="flex flex-row justify-between mx-10 items-center">
             <div className="flex flex-row justify-center items-center m-2 space-x-4">
-                <div className=" text-center">Select the priority:</div>
+                <div className=" text-center">Select cart products:</div>
                 <div className="flex flex-row justify-between space-x-4">
                     <button
                         onClick={selectFavourites}
                         type="button"
-                        className="flex-grow border p-2 rounded shadow-lg focus:bg-blue-800 focus:text-white"
+                        className="p-2 text-blue-400 hover:bg-blue-800 hover:text-white  text-sm w-20 border rounded shadow-lg border-blue-400 hover:border-blue-800 focus:outline-none"
                     >
                         Favorite
                     </button>
                     <button
-                        onClick={() => optimizeEqualNumber(oldCarts, newCarts)}
+                        onClick={() => optimizeEqualNumber(oldCarts)}
                         type="button"
-                        className="flex-grow border p-2 rounded shadow-lg focus:bg-blue-800 focus:text-white"
+                        className="p-2 text-blue-400 hover:bg-blue-800 hover:text-white  text-sm w-20 border rounded shadow-lg border-blue-400 hover:border-blue-800 focus:outline-none"
                     >
                         Equal
                     </button>
-                    <button
-                        type="button"
-                        className="flex-grow border p-2 rounded shadow-lg focus:bg-blue-800 focus:text-white"
-                    >
-                        Well behaved
-                    </button>
                 </div>
+                <div className="text-red-500 text-sm">{criteria}</div>
             </div>
+            <button
+                onClick={openModal}
+                type="button"
+                className="group w-8 h-8 border-2 rounded border-blue-400 hover:bg-blue-800 hover:text-white hover:border-blue-800 flex items-center justify-center"
+            >
+                <svg
+                    className="w-6 h-6 text-blue-400 group-hover:text-white text-center"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                </svg>
+            </button>
+            <Modal
+                isOpen={isOpen}
+                onRequestClose={closeModal}
+                overlayClassName="fixed inset-0 flex justify-center items-center bg-blue-800 bg-opacity-75"
+                className="relative bg-white overflow-y-auto rounded-lg focus:outline-none m-10 h-5/6"
+            >
+                <FinalCart
+                    setIsOpen={setIsOpen}
+                    isOpen={isOpen}
+                    approveCart={approveCart}
+                    approveProduct={approveProduct}
+                />
+            </Modal>
         </div>
     );
 };
