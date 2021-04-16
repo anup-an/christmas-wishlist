@@ -7,6 +7,11 @@ interface ICart {
     isApproved: boolean;
     isInCart: boolean;
 }
+interface ICartArr {
+    cart_id: number;
+    product_id: number;
+    product_price: number;
+}
 
 interface IComponentProps {
     criteria: string;
@@ -22,6 +27,18 @@ interface IFinalCartProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     approveCart: (selectedCart: ICart) => void;
     approveProduct: (productId: number, cartId: number) => void;
+}
+
+interface ISummaryProps {
+    finalCarts: ICart[];
+    findTotalNum: (finalCarts: ICart[]) => number;
+    findTotalSum: (finalCarts: ICart[]) => number;
+    isApproved: boolean;
+}
+
+interface ICartSummaryProps {
+    approvedCarts: ICart[];
+    discardedCarts: ICart[];
 }
 
 interface IProduct {

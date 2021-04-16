@@ -60,11 +60,11 @@ const App = (): JSX.Element => {
 
                 const cartData = data.data.map((cart: ICart) => {
                     const productArray = cart.products.map((product) => getProduct(product));
-                    (async function () {
+                    setTimeout(async function () {
                         for await (const val of productArray) {
                             return val;
                         }
-                    })();
+                    }, 2000);
 
                     return {
                         ...cart

@@ -150,7 +150,7 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
             <footer className="flex flex-row justify-around p-4">
                 <div>Total price</div>
                 <div>
-                    {cart.products
+                    {cart.products.length !== 0
                         ? cart.products.map((product) => parseFloat(product.price)).reduce((a, b) => a + b)
                         : ''}
                 </div>

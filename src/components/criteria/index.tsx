@@ -100,7 +100,7 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
                 isOpen={isOpen}
                 onRequestClose={closeModal}
                 overlayClassName="fixed inset-0 flex justify-center items-center bg-blue-800 bg-opacity-75"
-                className="relative bg-white overflow-y-auto rounded-lg focus:outline-none m-10 h-5/6"
+                className="relative bg-white overflow-y-auto rounded-lg focus:outline-none m-10"
             >
                 <FinalCart
                     setIsOpen={setIsOpen}

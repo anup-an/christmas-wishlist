@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+import axios from 'axios';
+import React, { useContext } from 'react';
 import CartContext from '../../context/cartContext';
 import WishList from './wishList';
 
