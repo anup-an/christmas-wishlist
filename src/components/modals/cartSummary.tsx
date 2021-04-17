@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React from 'react';
 import Summary from './summary';
 
@@ -55,24 +54,26 @@ const applyDiscount = (approvedCarts: ICart[]) => {
     return discount;
 };
 
-const CartSummary: React.FC<ICartSummaryProps> = ({ approvedCarts, discardedCarts }) => {
+const CartSummary: React.FC<ICartSummaryProps> = ({ approveCarts, discardCarts, approvedCarts }) => {
     return (
         <div className="text-sm mx-4 flex flex-col space-y-4 mb-4">
             <Summary
-                finalCarts={approvedCarts}
                 findTotalNum={findTotalNum}
                 findTotalSum={findTotalSum}
+                filterFunction={approveCarts}
                 isApproved={true}
             />
             <Summary
-                finalCarts={discardedCarts}
                 findTotalNum={findTotalNum}
                 findTotalSum={findTotalSum}
+                filterFunction={discardCarts}
                 isApproved={false}
             />
-            <div className="font-bold text-base text-red-500">Discount = {applyDiscount(approvedCarts)} </div>
+            <div className="font-bold text-base text-red-500">
+                Discount = {applyDiscount(approvedCarts).toFixed(2)}{' '}
+            </div>
             <div className="font-bold text-base text-blue-800">
-                You Pay: {findTotalSum(approvedCarts) - applyDiscount(approvedCarts)}
+                You Pay: {(findTotalSum(approvedCarts) - applyDiscount(approvedCarts)).toFixed(2)}
             </div>
             <button
                 type="button"

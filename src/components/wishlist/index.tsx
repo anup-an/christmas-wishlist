@@ -37,7 +37,7 @@ const WishListArray: React.FC<IComponentProps> = ({
         const addedCarts = carts.map((cart) =>
             cart.isApproved === true ? { ...cart, isInCart: true } : { ...cart, isInCart: false }
         );
-        addedCarts.filter((cart) => cart.isInCart === true) !== []
+        addedCarts.filter((cart) => cart.isInCart === true).length !== 0
             ? setFeedback('Added selected wishlist to cart')
             : setFeedback('Error!! Wishlist not added. Select at least 1 wishlist');
 
@@ -74,7 +74,7 @@ const WishListArray: React.FC<IComponentProps> = ({
                 </div>
                 <div className="text-sm text-red-500">{feedback}</div>
             </div>
-            <div className="grid grid-cols-3 gap-x-4 gap-y-4 mx-10 mb-10">
+            <div className="grid sm:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-x-4 gap-y-4 mx-10">
                 {carts
                     ? [...carts].map((cart) => (
                           <div key={cart.id}>

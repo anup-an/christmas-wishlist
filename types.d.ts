@@ -30,15 +30,16 @@ interface IFinalCartProps {
 }
 
 interface ISummaryProps {
-    finalCarts: ICart[];
     findTotalNum: (finalCarts: ICart[]) => number;
     findTotalSum: (finalCarts: ICart[]) => number;
+    filterFunction: () => ICart[];
     isApproved: boolean;
 }
 
 interface ICartSummaryProps {
+    approveCarts: () => ICart[];
+    discardCarts: () => ICart[];
     approvedCarts: ICart[];
-    discardedCarts: ICart[];
 }
 
 interface IProduct {

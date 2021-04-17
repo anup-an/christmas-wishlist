@@ -8,7 +8,7 @@ interface IWishListProps {
 
 const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct }) => {
     return (
-        <div className="border rounded shadow-lg text-xs divide-y">
+        <div className="border rounded shadow-lg text-xs divide-y h-100 w-106">
             <div
                 className={`flex flex-row justify-between items-center ${
                     cart.isApproved ? 'bg-blue-800' : 'bg-blue-400'
@@ -60,7 +60,11 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                 </div>
                 <div className="flex flex-row space-x-4 items-center">
                     {cart.isApproved ? (
-                        <div className="flex flex-row space-x-1 items-center">
+                        <div
+                            className={`flex flex-row space-x-1 items-center ${
+                                cart.products.length === 0 ? 'hidden' : 'block'
+                            }`}
+                        >
                             <div className="text-xs text-white">Click to deselect</div>
                             <button
                                 onClick={() => approveCart(cart)}
@@ -83,7 +87,11 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                             </button>
                         </div>
                     ) : (
-                        <div className="flex flex-row space-x-1 items-center">
+                        <div
+                            className={`flex flex-row space-x-1 items-center ${
+                                cart.products.length === 0 ? 'inivisible' : 'visible'
+                            }`}
+                        >
                             <div className="text-xs text-white">Click to select</div>
                             <button
                                 onClick={() => approveCart(cart)}
@@ -93,68 +101,105 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                     )}
                 </div>
             </div>
-            <div className="flex flex-row justify-around p-2">
-                <div>Product</div>
+            <div className="grid grid-cols-4">
+                <div
+                    className={`col-span-4 grid grid-cols-4 py-2 border-b bg-gray-100 justify-items-stretch ${
+                        cart.products.length === 0 ? 'hidden' : 'block'
+                    }`}
+                >
+                    <div className="col-span-3 justify-self-center">Product</div>
+                    <div className="justify-self-center">Price</div>
+                </div>
 
-                <div>Price</div>
-            </div>
-            <div className="divide-y">
-                {cart.products.map((product) => (
-                    <div key={product.productId} className="flex flex-row justify-between items-center p-2">
-                        {product.isApproved ? (
-                            <button
-                                onClick={() => approveProduct(product.productId, cart.id)}
-                                className="w-5 h-5 border rounded border-blue-400 shadow-lg bg-white flex items-center justify-center focus:outline-none"
+                {cart.products.length === 0 ? (
+                    <div className="col-span-4 place-content-center row-span-2">
+                        <div className="flex flex-row space-x-4 items-center justify-center">
+                            <svg
+                                className="w-24 h-24 text-blue-800"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
                             >
-                                <svg
-                                    className="w-5 h-5 text-green-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M5 13l4 4L19 7"
-                                    />
-                                </svg>
-                            </button>
-                        ) : (
-                            <button
-                                onClick={() => approveProduct(product.productId, cart.id)}
-                                className="w-5 h-5 border rounded shadow-lg border-blue-500 bg-white focus:outline-none"
-                            ></button>
-                        )}
-                        <img src={product.image} alt="image" className="w-1/6 h-1/6" />
-                        <div className="w-2/6">
-                            {product.isFavourite ? (
-                                <svg
-                                    className="w-4 h-4 fill-current text-yellow-400"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                                </svg>
-                            ) : (
-                                ''
-                            )}
-                            <div>{product.title}</div>
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                                />
+                            </svg>
+                            <div className="text-base">Empty</div>
                         </div>
-
-                        <div>{product.price}</div>
                     </div>
-                ))}
+                ) : (
+                    ''
+                )}
+
+                <div className="divide-y col-span-4">
+                    {cart.products.map((product) => (
+                        <div
+                            key={product.productId}
+                            className="p-2 grid grid-cols-4 justify-items-stretch place-items-center"
+                        >
+                            {product.isApproved ? (
+                                <button
+                                    onClick={() => approveProduct(product.productId, cart.id)}
+                                    className="w-5 h-5 border rounded border-blue-400 shadow-lg bg-white focus:outline-none"
+                                >
+                                    <svg
+                                        className="w-5 h-5 text-green-500"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => approveProduct(product.productId, cart.id)}
+                                    className="w-5 h-5 border rounded shadow-lg border-blue-500 bg-white focus:outline-none"
+                                ></button>
+                            )}
+                            <img src={product.image} alt="image" className="w-1/2 justify-self-start" />
+                            <div>
+                                {product.isFavourite ? (
+                                    <svg
+                                        className="w-4 h-4 fill-current text-yellow-400"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                                    </svg>
+                                ) : (
+                                    ''
+                                )}
+                                <div>{product.title}</div>
+                            </div>
+
+                            <div className="justify-self-center">{product.price}</div>
+                        </div>
+                    ))}
+                </div>
             </div>
-            <footer className="flex flex-row justify-around p-4">
-                <div>Total price</div>
-                <div>
+            <div
+                className={`relative col-span-4 grid grid-cols-4 place-items-center ${
+                    cart.products.length === 0 ? 'hidden' : 'block'
+                }`}
+            >
+                <div className="py-2 col-span-3">Total price</div>
+                <div className="col-span-1">
                     {cart.products.length !== 0
                         ? cart.products.map((product) => parseFloat(product.price)).reduce((a, b) => a + b)
                         : ''}
                 </div>
-            </footer>
+            </div>
         </div>
     );
 };

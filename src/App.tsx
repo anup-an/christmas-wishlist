@@ -24,17 +24,55 @@ const App = (): JSX.Element => {
     };
 
     const approveCart = (selectedCart: ICart) => {
-        const editedCarts = carts.map((cart) =>
-            selectedCart.id === cart.id ? { ...cart, isApproved: cart.isApproved === true ? false : true } : { ...cart }
-        );
-        setCarts([...editedCarts]);
+        const myCarts: ICart[] = [...carts];
+        const arrLength = selectedCart.products.filter((product) => product.isApproved === true).length;
+        setCriteria('');
+
+        for (let i = 0; i < myCarts.length; i++) {
+            if (selectedCart.id == myCarts[i].id && arrLength !== 0) {
+                if (myCarts[i].isApproved === true) {
+                    myCarts[i] = { ...myCarts[i], isApproved: false };
+                    setFeedback(`Cart of child ${selectedCart.id} is unselected`);
+                    console.log(myCarts[i]);
+                } else if (myCarts[i].isApproved === false) {
+                    myCarts[i] = { ...myCarts[i], isApproved: true };
+
+                    setFeedback(`Cart of child ${selectedCart.id}  is selected`);
+                }
+
+                console.log(myCarts[i]);
+            } else if (selectedCart.id == myCarts[i].id && arrLength == 0) {
+                setFeedback(
+                    `Selection error!! Please select at least gift item from the wishlist of child ${selectedCart.id}.`
+                );
+            }
+        }
+        console.log(myCarts);
+        setCarts(myCarts);
+    };
+
+    /* const editedCarts = carts.map((cart) => {
+            selectedCart.id === cart.id &&
+            selectedCart.products.filter((product) => product.isApproved === true).length !== 0
+                ? { ...cart, isApproved: cart.isApproved === true ? false : true }
+                : { ...cart };
+            cart.isApproved
+                ? setFeedback(`Cart of child ${cart.id}is approved`)
+                : setFeedback(
+                      `Cart of child ${cart.id}is not approved. Remember to select at least 1 product before approving`
+                  );
+        }));
+ */
+    /* setCarts([...editedCarts]);
         setCriteria('');
         setFeedback(
             `Cart of child ${
-                selectedCart.isApproved ? selectedCart.id + ' is unselected' : selectedCart.id + ' is selected'
+                !selectedCart.isApproved
+                    ? selectedCart.id + ' is not selected. Remember to select at least 1 product to select a cart'
+                    : selectedCart.id + ' is selected'
             }`
-        );
-    };
+        ); */
+
     const approveProduct = (productId: number, cartId: number) => {
         const updatedCarts = carts.map((cart) =>
             cart.id === cartId
@@ -86,7 +124,7 @@ const App = (): JSX.Element => {
                     localStorage.setItem('CartList', JSON.stringify(updatedData));
 
                     setCarts([...updatedData]);
-                }, 2000);
+                }, 3000);
             } catch (error) {
                 console.log(error);
             }
@@ -97,7 +135,7 @@ const App = (): JSX.Element => {
         <div>
             {carts !== [] ? (
                 <CartContext.Provider value={{ carts, setCarts }}>
-                    <div className="flex flex-col space-y-16">
+                    <div className="flex flex-col space-y-16 mb-10">
                         <Criterias
                             criteria={criteria}
                             setCriteria={setCriteria}
