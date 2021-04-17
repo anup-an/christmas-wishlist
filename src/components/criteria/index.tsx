@@ -21,13 +21,15 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
 
     const oldCarts = list
         ? JSON.parse(list).map((cart: ICart) => ({
-              ...cart
+              ...cart,
+              isApproved: true
           }))
         : '';
     // selects only favourite gifts from all of the carts
     const selectFavourites = () => {
         const favourites = carts.map((cart) => ({
             ...cart,
+            isApproved: true,
             products: cart.products.map((product) =>
                 product.isFavourite === true ? { ...product, isApproved: true } : { ...product, isApproved: false }
             )

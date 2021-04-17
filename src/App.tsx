@@ -9,6 +9,7 @@ const App = (): JSX.Element => {
     const [carts, setCarts] = useState<ICart[]>([]);
     const [feedback, setFeedback] = useState<string>('');
     const [criteria, setCriteria] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
 
     const getProduct = async (product: IProduct) => {
         try {
@@ -17,6 +18,7 @@ const App = (): JSX.Element => {
             product.title = p.data.title;
             product.image = p.data.image;
             product.price = p.data.price;
+            setLoading(false);
             return product;
         } catch (error) {
             console.log(error);
@@ -51,28 +53,6 @@ const App = (): JSX.Element => {
         setCarts(myCarts);
     };
 
-    /* const editedCarts = carts.map((cart) => {
-            selectedCart.id === cart.id &&
-            selectedCart.products.filter((product) => product.isApproved === true).length !== 0
-                ? { ...cart, isApproved: cart.isApproved === true ? false : true }
-                : { ...cart };
-            cart.isApproved
-                ? setFeedback(`Cart of child ${cart.id}is approved`)
-                : setFeedback(
-                      `Cart of child ${cart.id}is not approved. Remember to select at least 1 product before approving`
-                  );
-        }));
- */
-    /* setCarts([...editedCarts]);
-        setCriteria('');
-        setFeedback(
-            `Cart of child ${
-                !selectedCart.isApproved
-                    ? selectedCart.id + ' is not selected. Remember to select at least 1 product to select a cart'
-                    : selectedCart.id + ' is selected'
-            }`
-        ); */
-
     const approveProduct = (productId: number, cartId: number) => {
         const updatedCarts = carts.map((cart) =>
             cart.id === cartId
@@ -102,12 +82,13 @@ const App = (): JSX.Element => {
                         for await (const val of productArray) {
                             return val;
                         }
-                    }, 2000);
+                    }, 1000);
 
                     return {
                         ...cart
                     };
                 });
+
                 // added additional properties to the cart and product arrays to facilitate the selection and approval of carts and products
                 setTimeout(function () {
                     const updatedData = cartData.map((cart: ICart, cartIndex: number) => ({
@@ -122,7 +103,7 @@ const App = (): JSX.Element => {
                         }))
                     }));
                     localStorage.setItem('CartList', JSON.stringify(updatedData));
-
+                    console.log(updatedData);
                     setCarts([...updatedData]);
                 }, 3000);
             } catch (error) {
@@ -132,8 +113,8 @@ const App = (): JSX.Element => {
     }, []);
 
     return (
-        <div>
-            {carts !== [] ? (
+        <div className="w-full h-full">
+            {!loading ? (
                 <CartContext.Provider value={{ carts, setCarts }}>
                     <div className="flex flex-col space-y-16 mb-10">
                         <Criterias
@@ -155,7 +136,21 @@ const App = (): JSX.Element => {
                     </div>
                 </CartContext.Provider>
             ) : (
-                <div>Loading data .....</div>
+                <div className="flex justify-center items-center m-56 text-lg">
+                    <div className="flex flex-col justify-center">
+                        <div className="animate-spin w-5 h-5">
+                            <svg
+                                className="fill-current text-red-500 "
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                            >
+                                <path d="M14.66 15.66A8 8 0 1117 10h-2a6 6 0 10-1.76 4.24l1.42 1.42zM12 10h8l-4 4-4-4z" />
+                            </svg>
+                        </div>
+                        <div>Loading page .....</div>
+                        <div>This may take a few seconds, please don't close the page.</div>
+                    </div>
+                </div>
             )}
         </div>
     );
