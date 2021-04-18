@@ -1,6 +1,6 @@
 # About the app
 
-This app was created with React. The app is an imaginary christmas gift picking marketplace. The app allows browsing parent to view the wishlists of their children, approve or discard gifts. The final summary of carts are displayed with discounts applied. The fake data comes from Fake Store API [https://fakestoreapi.com/docs](https://fakestoreapi.com/docs)
+This app was created with React. The app is an imaginary christmas gift picking marketplace. The app allows browsing parent to view the wishlists of their children, approve or discard gifts. The final summary of carts are displayed with discounts applied. The fake data comes from Fake Store API [https://fakestoreapi.com/docs](https://fakestoreapi.com/docs). The app is hosted at [https://droppe-assignment.web.app/](https://droppe-assignment.web.app/)
 
 
 ### Installing the app
