@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import CartContext from '../../context/cartContext';
 
 const Summary: React.FC<ISummaryProps> = ({ findTotalNum, findTotalSum, filterFunction, isApproved }) => {
-    const { carts, setCarts } = useContext(CartContext);
+    const { carts } = useContext(CartContext);
     const [filterCarts, setFilterCarts] = useState<ICart[]>([]);
 
     useEffect(() => {
@@ -17,7 +17,6 @@ const Summary: React.FC<ISummaryProps> = ({ findTotalNum, findTotalSum, filterFu
                 });
                 cartArr = [...cartArr, { ...response.data }];
             }
-            console.log(cartArr);
             setFilterCarts([...cartArr]);
         })();
     }, [carts]);

@@ -1,11 +1,11 @@
 # About the app
 
-This app was created with React. The app is an imaginary christmas gift picking marketplace. The app allows browsing parent to view the wishlists of their children, approve or discard gifts. The final summary of carts are displayed with discounts applied.
+This app was created with React. The app is an imaginary christmas gift picking marketplace. The app allows browsing parent to view the wishlists of their children, approve or discard gifts. The final summary of carts are displayed with discounts applied. The fake data comes from Fake Store API [https://fakestoreapi.com/docs](https://fakestoreapi.com/docs)
 
 
 ### Starting the app
 
-## `npm start`
+#### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useContext } from 'react';
 import CartContext from '../../context/cartContext';
 import WishList from './wishList';
@@ -11,10 +10,6 @@ const WishListArray: React.FC<IComponentProps> = ({
     approveCart
 }): JSX.Element => {
     const { carts, setCarts } = useContext(CartContext);
-    const sumPrice = (cart: ICart) => {
-        const arr = cart.products.map((product) => parseFloat(product.price));
-        return arr.reduce((a, b) => a + b);
-    };
 
     // clears all selections and clears carts
     const resetCarts = () => {

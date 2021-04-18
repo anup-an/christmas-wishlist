@@ -70,7 +70,7 @@ const App = (): JSX.Element => {
         );
         const updateByProduct = updatedCarts.map((cart) =>
             cart.id === cartId && cart.products.filter((product) => product.isApproved === true).length === 0
-                ? { ...cart, isInCart: false }
+                ? { ...cart, isApproved: false }
                 : { ...cart }
         );
         setCarts([...updateByProduct]);

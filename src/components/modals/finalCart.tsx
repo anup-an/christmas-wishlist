@@ -4,15 +4,22 @@ import CartContext from '../../context/cartContext';
 import CartSummary from './cartSummary';
 
 const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveProduct }) => {
-    const { carts, setCarts } = useContext(CartContext);
+    const { carts } = useContext(CartContext);
 
     //filters approved products in approved carts
     const approveCarts = () => {
-        return carts.map((cart) => ({
+        const x = carts.map((cart) => ({
             ...cart,
             products: cart.products.filter((product) => cart.isApproved && cart.isInCart && product.isApproved)
         }));
+        const y = x.map((cart) =>
+            cart.products.filter((product) => product.isApproved === false).length !== 0 && cart.isApproved === true
+                ? { ...cart, isInCart: true }
+                : { ...cart }
+        );
+        return y;
     };
+
     //filters discarded products in discarded carts
     const discardCarts = () => {
         return carts.map((cart) => ({
