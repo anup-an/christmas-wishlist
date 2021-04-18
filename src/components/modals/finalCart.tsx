@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import WishList from '../wishlist/wishList';
 import CartContext from '../../context/cartContext';
 import CartSummary from './cartSummary';
-import axios from 'axios';
 
 const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveProduct }) => {
     const { carts, setCarts } = useContext(CartContext);

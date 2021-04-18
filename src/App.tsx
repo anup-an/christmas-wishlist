@@ -18,7 +18,6 @@ const App = (): JSX.Element => {
             product.title = p.data.title;
             product.image = p.data.image;
             product.price = p.data.price;
-            setLoading(false);
             return product;
         } catch (error) {
             console.log(error);
@@ -35,21 +34,17 @@ const App = (): JSX.Element => {
                 if (myCarts[i].isApproved === true) {
                     myCarts[i] = { ...myCarts[i], isApproved: false };
                     setFeedback(`Cart of child ${selectedCart.id} is unselected`);
-                    console.log(myCarts[i]);
                 } else if (myCarts[i].isApproved === false) {
                     myCarts[i] = { ...myCarts[i], isApproved: true };
 
                     setFeedback(`Cart of child ${selectedCart.id}  is selected`);
                 }
-
-                console.log(myCarts[i]);
             } else if (selectedCart.id == myCarts[i].id && arrLength == 0) {
                 setFeedback(
                     `Selection error!! Please select at least gift item from the wishlist of child ${selectedCart.id}.`
                 );
             }
         }
-        console.log(myCarts);
         setCarts(myCarts);
     };
 
@@ -83,6 +78,7 @@ const App = (): JSX.Element => {
                             return val;
                         }
                     })();
+                    setLoading(false);
 
                     return {
                         ...cart
@@ -103,9 +99,8 @@ const App = (): JSX.Element => {
                         }))
                     }));
                     localStorage.setItem('CartList', JSON.stringify(updatedData));
-                    console.log(updatedData);
                     setCarts([...updatedData]);
-                }, 20000);
+                }, 3000);
             } catch (error) {
                 console.log(error);
             }

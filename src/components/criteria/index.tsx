@@ -47,7 +47,7 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
                       isApproved: true,
                       products: cart.products.map((product) => ({ ...product, isApproved: true }))
                   }
-                : { ...cart }
+                : { ...cart, isApproved: false }
         );
         setCarts([...wellbehaved]);
         setFeedback('');
