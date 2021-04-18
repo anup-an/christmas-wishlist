@@ -33,7 +33,7 @@ const App = (): JSX.Element => {
         for (let i = 0; i < myCarts.length; i++) {
             if (selectedCart.id == myCarts[i].id && arrLength !== 0) {
                 if (myCarts[i].isApproved === true) {
-                    myCarts[i] = { ...myCarts[i], isApproved: false, isInCart: false };
+                    myCarts[i] = { ...myCarts[i], isApproved: false };
                     setFeedback(`Cart of child ${selectedCart.id} is unselected`);
                     console.log(myCarts[i]);
                 } else if (myCarts[i].isApproved === false) {
@@ -105,7 +105,7 @@ const App = (): JSX.Element => {
                     localStorage.setItem('CartList', JSON.stringify(updatedData));
                     console.log(updatedData);
                     setCarts([...updatedData]);
-                }, 3000);
+                }, 20000);
             } catch (error) {
                 console.log(error);
             }

@@ -8,27 +8,18 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
     const { carts, setCarts } = useContext(CartContext);
 
     const approveCarts = () => {
-        return carts
-            .filter((cart) => cart.isInCart === true && cart.isApproved === true)
-            .filter((cart) => cart.products.filter((product) => product.isApproved === true) !== [])
-            .map((cart) => ({ ...cart, products: cart.products.filter((product) => product.isApproved === true) }));
-    };
-
-    const discardCarts = () => {
-        const notApproved = carts.filter(
-            (cart) =>
-                cart.isInCart === false ||
-                (cart.isInCart === true && cart.products.filter((product) => product.isApproved === false) !== []) ||
-                cart.isApproved === false
-        );
-        const discardCarts = notApproved.map((cart) => ({
+        return carts.map((cart) => ({
             ...cart,
-            products:
-                cart.isApproved === false
-                    ? cart.products
-                    : cart.products.filter((product) => product.isApproved === false)
+            products: cart.products.filter((product) => cart.isApproved && cart.isInCart && product.isApproved)
         }));
-        return discardCarts;
+    };
+    const discardCarts = () => {
+        return carts.map((cart) => ({
+            ...cart,
+            products: cart.products.filter(
+                (product) => product.isApproved === false || cart.isApproved === false || cart.isInCart === false
+            )
+        }));
     };
 
     const approvedCarts: ICart[] = approveCarts();
@@ -37,37 +28,34 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
     const [displayApprovedCart, setDisplayApprovedCart] = useState<ICart>(approvedCarts[0]);
     const [displayDiscardedCart, setDisplayDiscardedCart] = useState<ICart>(discardedCarts[0]);
 
-    const slideLeft = (selectedCarts: ICart[], displayCart: ICart, type: string) => {
-        const index = selectedCarts.map((e) => e.id).indexOf(displayCart.id);
-        if (type === 'approved') {
-            index > 0
-                ? setDisplayApprovedCart(selectedCarts[index - 1])
-                : setDisplayApprovedCart(selectedCarts[selectedCarts.length - 1]);
-        } else if (type === 'discarded') {
-            index > 0
-                ? setDisplayDiscardedCart(selectedCarts[index - 1])
-                : setDisplayDiscardedCart(selectedCarts[selectedCarts.length - 1]);
-        }
+    const slideLeft = (displayApprove: ICart, displayDiscard: ICart) => {
+        const index1 = approvedCarts.map((e) => e.id).indexOf(displayApprove.id);
+        const index2 = discardedCarts.map((e) => e.id).indexOf(displayDiscard.id);
+        index1 > 0
+            ? setDisplayApprovedCart(approvedCarts[index1 - 1])
+            : setDisplayApprovedCart(approvedCarts[approvedCarts.length - 1]);
+        index2 > 0
+            ? setDisplayDiscardedCart(discardedCarts[index2 - 1])
+            : setDisplayDiscardedCart(discardedCarts[discardedCarts.length - 1]);
     };
 
-    const slideRight = (selectedCarts: ICart[], displayCart: ICart, type: string) => {
-        const index = selectedCarts.map((e) => e.id).indexOf(displayCart.id);
-        if (type === 'approved') {
-            index < selectedCarts.length - 1
-                ? setDisplayApprovedCart(selectedCarts[index + 1])
-                : setDisplayApprovedCart(selectedCarts[0]);
-        } else if (type === 'discarded') {
-            index < selectedCarts.length - 1
-                ? setDisplayDiscardedCart(selectedCarts[index + 1])
-                : setDisplayDiscardedCart(selectedCarts[0]);
-        }
+    const slideRight = (displayApprove: ICart, displayDiscard: ICart) => {
+        const index1 = approvedCarts.map((e) => e.id).indexOf(displayApprove.id);
+        const index2 = discardedCarts.map((e) => e.id).indexOf(displayDiscard.id);
+        index1 < approvedCarts.length - 1
+            ? setDisplayApprovedCart(approvedCarts[index1 + 1])
+            : setDisplayApprovedCart(approvedCarts[0]);
+        index2 < discardedCarts.length - 1
+            ? setDisplayDiscardedCart(discardedCarts[index2 + 1])
+            : setDisplayDiscardedCart(discardedCarts[0]);
     };
 
     useEffect(() => {
-        const approvedCarts = approveCarts();
-        const discardedCarts = discardCarts();
-        setDisplayApprovedCart(approvedCarts[0]);
-        setDisplayDiscardedCart(discardedCarts[0]);
+        const x = approveCarts().filter((cart) => cart.id === displayApprovedCart.id)[0];
+        const y = discardCarts().filter((cart) => cart.id === displayDiscardedCart.id)[0];
+
+        setDisplayApprovedCart(x);
+        setDisplayDiscardedCart(y);
     }, [carts]);
 
     return (
@@ -101,7 +89,7 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
                             <div className="flex flex-row">
                                 <div className="flex flex-row items-center justify-center">
                                     <button
-                                        onClick={() => slideLeft(approvedCarts, displayApprovedCart, 'approved')}
+                                        onClick={() => slideLeft(displayApprovedCart, displayDiscardedCart)}
                                         type="button"
                                         className={`border visible rounded-full flex items-center justify-center bg-gray-200 hover:bg-blue-800 hover:text-white focus:outline-none`}
                                     >
@@ -130,57 +118,12 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
                                         />
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-center">
-                                    <button
-                                        onClick={() => slideRight(approvedCarts, displayApprovedCart, 'approved')}
-                                        type="button"
-                                        className={`border visible
-                         rounded-full flex items-center justify-center bg-gray-200 hover:bg-blue-800 hover:text-white focus:outline-none`}
-                                    >
-                                        <svg
-                                            className="w-6 h-6"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M9 5l7 7-7 7"
-                                            />
-                                        </svg>
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-col justify-center items-center">
                         <div>Discarded carts</div>
                         <div className="flex flex-row">
-                            <div className="flex flex-row items-center justify-center">
-                                <button
-                                    onClick={() => slideLeft(discardedCarts, displayDiscardedCart, 'discarded')}
-                                    type="button"
-                                    className={`border visible rounded-full flex items-center justify-center bg-gray-200 hover:bg-blue-800 hover:text-white focus:outline-none`}
-                                >
-                                    <svg
-                                        className="w-6 h-6"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M15 19l-7-7 7-7"
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
                             <div className="flex items-center">
                                 <WishList
                                     cart={displayDiscardedCart}
@@ -190,7 +133,7 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
                             </div>
                             <div className="flex items-center justify-center">
                                 <button
-                                    onClick={() => slideRight(discardedCarts, displayDiscardedCart, 'discarded')}
+                                    onClick={() => slideRight(displayApprovedCart, displayDiscardedCart)}
                                     type="button"
                                     className={`border visible
                          rounded-full flex items-center justify-center bg-gray-200 hover:bg-blue-800 hover:text-white focus:outline-none`}
