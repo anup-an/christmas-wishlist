@@ -39,6 +39,21 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
         setCriteria('Only favourite gifts selected from the all the carts');
     };
 
+    const selectBehaved = () => {
+        const wellbehaved = carts.map((cart) =>
+            cart.isWellBehaved === true
+                ? {
+                      ...cart,
+                      isApproved: true,
+                      products: cart.products.map((product) => ({ ...product, isApproved: true }))
+                  }
+                : { ...cart }
+        );
+        setCarts([...wellbehaved]);
+        setFeedback('');
+        setCriteria('Wishlist of well behaved child selected.');
+    };
+
     const optimizeEqualNumber = (oldCarts: ICart[]) => {
         const updatedCarts = oldCarts.map(
             (cart: ICart) => selectMinProduct(cart, oldCarts).filter((selected) => selected.id === cart.id)[0]
@@ -75,16 +90,26 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
                     >
                         Equal
                     </button>
+                    <button
+                        onClick={selectBehaved}
+                        type="button"
+                        className="p-2 text-blue-400 hover:bg-blue-800 hover:text-white  text-sm w-20 border rounded shadow-lg border-blue-400 hover:border-blue-800 focus:outline-none"
+                    >
+                        Behaved
+                    </button>
                 </div>
                 <div className="text-red-500 text-sm">{criteria}</div>
             </div>
             <button
                 onClick={openModal}
                 type="button"
-                className="group w-8 h-8 border-2 rounded border-blue-400 hover:bg-blue-800 hover:text-white hover:border-blue-800 flex items-center justify-center"
+                className="group w-11 h-11 border-2 rounded border-blue-400 hover:bg-blue-800 hover:text-white hover:border-blue-800 flex items-center justify-center focus:outline-none"
             >
+                <div className="absolute right-5 w-6 h-6 top-1 border rounded-full bg-red-500 text-white flex items-center justify-center">
+                    <div>{carts.filter((cart) => cart.isInCart === true).length}</div>
+                </div>
                 <svg
-                    className="w-6 h-6 text-blue-400 group-hover:text-white text-center"
+                    className="w-7 h-7 text-blue-400 group-hover:text-white text-center"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     stroke="currentColor"

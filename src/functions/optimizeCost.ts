@@ -1,4 +1,4 @@
-interface IArr {
+/* interface IArr {
     id: number;
     products: IProductArr[];
 }
@@ -96,3 +96,5 @@ const optimizeCost = (arr: IArr[], x: number) => {
 };
 
 optimizeCost(arr, 5);
+ */
+export {};
