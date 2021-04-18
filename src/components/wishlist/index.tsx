@@ -16,11 +16,14 @@ const WishListArray: React.FC<IComponentProps> = ({
         return arr.reduce((a, b) => a + b);
     };
 
+    // clears all selections and clears carts
     const resetCarts = () => {
         const list = localStorage.getItem('CartList');
         list ? setCarts(JSON.parse(list)) : '';
         setFeedback('All wishlists and product selections cleared ');
     };
+
+    // selects all carts and their items
 
     const approveAll = () => {
         const editedCarts = carts.map((cart) => ({
@@ -33,13 +36,14 @@ const WishListArray: React.FC<IComponentProps> = ({
         setFeedback('All wishlists and their products selected');
     };
 
+    // adds selected wishlists to cart
     const addToCart = () => {
         const addedCarts = carts.map((cart) =>
             cart.isApproved === true ? { ...cart, isInCart: true } : { ...cart, isInCart: false }
         );
         addedCarts.filter((cart) => cart.isInCart === true).length !== 0
             ? setFeedback('Added selected wishlist to cart')
-            : setFeedback('Error!! Wishlist not added. Select at least 1 wishlist');
+            : setFeedback('Error!! Wishlist not added to cart. Select at least 1 wishlist');
 
         setCarts([...addedCarts]);
         setCriteria('');

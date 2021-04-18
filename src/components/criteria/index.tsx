@@ -36,8 +36,10 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
         }));
         setCarts([...favourites]);
         setFeedback('');
-        setCriteria('Only favourite gifts selected from the all the carts');
+        setCriteria('Only favourite gifts selected from the all the wishlists');
     };
+
+    // selects all gifts of only well-behaved children from their wishlists
 
     const selectBehaved = () => {
         const wellbehaved = carts.map((cart) =>
@@ -51,9 +53,10 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
         );
         setCarts([...wellbehaved]);
         setFeedback('');
-        setCriteria('Wishlist of well behaved child selected.');
+        setCriteria('Wishlist of only well behaved children approved.');
     };
 
+    //selects equal number of gifts from the wishlists
     const optimizeEqualNumber = (oldCarts: ICart[]) => {
         const updatedCarts = oldCarts.map(
             (cart: ICart) => selectMinProduct(cart, oldCarts).filter((selected) => selected.id === cart.id)[0]
@@ -68,7 +71,7 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
         setCarts([...updatedCarts]);
         setFeedback('');
 
-        setCriteria('Equal number of gifts with mimimum total price selected from the wishlists ');
+        setCriteria('Equal number of gifts with mimimum total price approved from the wishlists ');
     };
 
     return (
@@ -106,7 +109,15 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
                 className="group w-11 h-11 border-2 rounded border-blue-400 hover:bg-blue-800 hover:text-white hover:border-blue-800 flex items-center justify-center focus:outline-none"
             >
                 <div className="absolute right-5 w-6 h-6 top-1 border rounded-full bg-red-500 text-white flex items-center justify-center">
-                    <div>{carts.filter((cart) => cart.isInCart === true).length}</div>
+                    <div>
+                        {
+                            carts.filter(
+                                (cart) =>
+                                    cart.isInCart === true &&
+                                    cart.products.filter((product) => product.isApproved === true).length !== 0
+                            ).length
+                        }
+                    </div>
                 </div>
                 <svg
                     className="w-7 h-7 text-blue-400 group-hover:text-white text-center"

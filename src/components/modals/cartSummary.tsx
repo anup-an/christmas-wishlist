@@ -15,6 +15,7 @@ const findTotalSum = (carts: ICart[]) => {
     return sum;
 };
 
+// applies discount to approved carts
 const applyDiscount = (approvedCarts: ICart[]) => {
     let productArr: number[] = [];
     let cartArr: ICartArr[] = [];

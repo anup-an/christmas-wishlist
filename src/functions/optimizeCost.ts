@@ -1,4 +1,4 @@
-/* interface IArr {
+interface IArr {
     id: number;
     products: IProductArr[];
 }
@@ -60,6 +60,8 @@ interface IterationType {
     total: number;
 }
 
+// returns arr with minimum total cost
+
 const optimizeCost = (arr: IArr[], x: number) => {
     let iterationArray: IterationType[] = [];
     for (let m = 0; m < 500; m++) {
@@ -96,5 +98,5 @@ const optimizeCost = (arr: IArr[], x: number) => {
 };
 
 optimizeCost(arr, 5);
- */
+
 export {};

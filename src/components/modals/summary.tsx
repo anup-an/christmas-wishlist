@@ -8,7 +8,7 @@ const Summary: React.FC<ISummaryProps> = ({ findTotalNum, findTotalSum, filterFu
 
     useEffect(() => {
         const filterArr = filterFunction();
-
+        // get data from fakestore api
         (async () => {
             let cartArr: ICart[] = [];
             for (let i = 0; i < filterArr.length; i++) {

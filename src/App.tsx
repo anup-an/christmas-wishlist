@@ -11,6 +11,7 @@ const App = (): JSX.Element => {
     const [criteria, setCriteria] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
 
+    //fetches data from api
     const getProduct = async (product: IProduct) => {
         try {
             const p = await axios.get(`https://fakestoreapi.com/products/${product.productId}`);
@@ -24,6 +25,7 @@ const App = (): JSX.Element => {
         }
     };
 
+    // selects cart
     const approveCart = (selectedCart: ICart) => {
         const myCarts: ICart[] = [...carts];
         const arrLength = selectedCart.products.filter((product) => product.isApproved === true).length;
@@ -32,12 +34,16 @@ const App = (): JSX.Element => {
         for (let i = 0; i < myCarts.length; i++) {
             if (selectedCart.id == myCarts[i].id && arrLength !== 0) {
                 if (myCarts[i].isApproved === true) {
-                    myCarts[i] = { ...myCarts[i], isApproved: false };
+                    myCarts[i] = {
+                        ...myCarts[i],
+                        isApproved: false,
+                        products: myCarts[i].products.map((product) => ({ ...product, isApproved: false }))
+                    };
                     setFeedback(`Cart of child ${selectedCart.id} is unselected`);
                 } else if (myCarts[i].isApproved === false) {
                     myCarts[i] = { ...myCarts[i], isApproved: true };
 
-                    setFeedback(`Cart of child ${selectedCart.id}  is selected`);
+                    setFeedback(`Cart of child ${selectedCart.id}  is selected. Click add button to add it to cart`);
                 }
             } else if (selectedCart.id == myCarts[i].id && arrLength == 0) {
                 setFeedback(
@@ -48,6 +54,7 @@ const App = (): JSX.Element => {
         setCarts(myCarts);
     };
 
+    //selects product
     const approveProduct = (productId: number, cartId: number) => {
         const updatedCarts = carts.map((cart) =>
             cart.id === cartId
@@ -61,7 +68,12 @@ const App = (): JSX.Element => {
                   }
                 : { ...cart }
         );
-        setCarts([...updatedCarts]);
+        const updateByProduct = updatedCarts.map((cart) =>
+            cart.id === cartId && cart.products.filter((product) => product.isApproved === true).length === 0
+                ? { ...cart, isInCart: false }
+                : { ...cart }
+        );
+        setCarts([...updateByProduct]);
         setCriteria('');
         setFeedback(`1 product edited in wishlist of child ${cartId}`);
     };

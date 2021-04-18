@@ -6,12 +6,14 @@ import CartSummary from './cartSummary';
 const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveProduct }) => {
     const { carts, setCarts } = useContext(CartContext);
 
+    //filters approved products in approved carts
     const approveCarts = () => {
         return carts.map((cart) => ({
             ...cart,
             products: cart.products.filter((product) => cart.isApproved && cart.isInCart && product.isApproved)
         }));
     };
+    //filters discarded products in discarded carts
     const discardCarts = () => {
         return carts.map((cart) => ({
             ...cart,
@@ -27,6 +29,7 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
     const [displayApprovedCart, setDisplayApprovedCart] = useState<ICart>(approvedCarts[0]);
     const [displayDiscardedCart, setDisplayDiscardedCart] = useState<ICart>(discardedCarts[0]);
 
+    // slides carts display left
     const slideLeft = (displayApprove: ICart, displayDiscard: ICart) => {
         const index1 = approvedCarts.map((e) => e.id).indexOf(displayApprove.id);
         const index2 = discardedCarts.map((e) => e.id).indexOf(displayDiscard.id);
@@ -38,6 +41,7 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
             : setDisplayDiscardedCart(discardedCarts[discardedCarts.length - 1]);
     };
 
+    // slides carts display left
     const slideRight = (displayApprove: ICart, displayDiscard: ICart) => {
         const index1 = approvedCarts.map((e) => e.id).indexOf(displayApprove.id);
         const index2 = discardedCarts.map((e) => e.id).indexOf(displayDiscard.id);
