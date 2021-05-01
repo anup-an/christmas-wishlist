@@ -7,7 +7,8 @@ const WishListArray: React.FC<IComponentProps> = ({
     feedback,
     setFeedback,
     approveProduct,
-    approveCart
+    approveCart,
+    addToCart
 }): JSX.Element => {
     const { carts, setCarts } = useContext(CartContext);
 
@@ -29,19 +30,6 @@ const WishListArray: React.FC<IComponentProps> = ({
         setCarts([...editedCarts]);
         setCriteria('');
         setFeedback('All wishlists and their products selected');
-    };
-
-    // adds selected wishlists to cart
-    const addToCart = () => {
-        const addedCarts = carts.map((cart) =>
-            cart.isApproved === true ? { ...cart, isInCart: true } : { ...cart, isInCart: false }
-        );
-        addedCarts.filter((cart) => cart.isInCart === true).length !== 0
-            ? setFeedback('Added selected wishlist to cart')
-            : setFeedback('Error!! Wishlist not added to cart. Select at least 1 wishlist');
-
-        setCarts([...addedCarts]);
-        setCriteria('');
     };
 
     return (

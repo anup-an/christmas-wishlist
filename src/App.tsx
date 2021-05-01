@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './assets/App.scss';
 import './assets/main.css';
 import WishListArray from './components/wishlist';
 import Criterias from './components/criteria';
@@ -78,6 +79,19 @@ const App = (): JSX.Element => {
         setFeedback(`1 product edited in wishlist of child ${cartId}`);
     };
 
+    // adds selected wishlists to cart
+    const addToCart = () => {
+        const addedCarts = carts.map((cart) =>
+            cart.isApproved === true ? { ...cart, isInCart: true } : { ...cart, isInCart: false }
+        );
+        addedCarts.filter((cart) => cart.isInCart === true).length !== 0
+            ? setFeedback('Added selected wishlist to cart')
+            : setFeedback('Error!! Wishlist not added to cart. Select at least 1 wishlist');
+
+        setCarts([...addedCarts]);
+        setCriteria('');
+    };
+
     useEffect(() => {
         (async (): Promise<void> => {
             try {
@@ -87,6 +101,8 @@ const App = (): JSX.Element => {
                     const productArray = cart.products.map((product) => getProduct(product));
                     (async function () {
                         for await (const val of productArray) {
+                            setLoading(false);
+
                             return val;
                         }
                     })();
@@ -120,10 +136,10 @@ const App = (): JSX.Element => {
     }, []);
 
     return (
-        <div className="w-full h-full">
+        <div>
             {!loading ? (
                 <CartContext.Provider value={{ carts, setCarts }}>
-                    <div className="flex flex-col space-y-16 mb-10">
+                    <div className="app">
                         <Criterias
                             criteria={criteria}
                             setCriteria={setCriteria}
@@ -131,6 +147,7 @@ const App = (): JSX.Element => {
                             setFeedback={setFeedback}
                             approveCart={approveCart}
                             approveProduct={approveProduct}
+                            addToCart={addToCart}
                         />
                         <WishListArray
                             criteria={criteria}
@@ -139,21 +156,16 @@ const App = (): JSX.Element => {
                             setFeedback={setFeedback}
                             approveCart={approveCart}
                             approveProduct={approveProduct}
+                            addToCart={addToCart}
                         />
                     </div>
                 </CartContext.Provider>
             ) : (
-                <div className="flex justify-center items-center m-56 text-lg">
-                    <div className="flex flex-col justify-center">
-                        <div className="animate-spin w-5 h-5">
-                            <svg
-                                className="fill-current text-red-500 "
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                            >
-                                <path d="M14.66 15.66A8 8 0 1117 10h-2a6 6 0 10-1.76 4.24l1.42 1.42zM12 10h8l-4 4-4-4z" />
-                            </svg>
-                        </div>
+                <div className="app-loader">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M14.66 15.66A8 8 0 1117 10h-2a6 6 0 10-1.76 4.24l1.42 1.42zM12 10h8l-4 4-4-4z" />
+                        </svg>
                         <div>Loading page .....</div>
                         <div>This may take a few seconds, please don't close the page.</div>
                     </div>

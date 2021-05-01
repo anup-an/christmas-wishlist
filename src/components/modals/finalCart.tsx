@@ -3,17 +3,17 @@ import WishList from '../wishlist/wishList';
 import CartContext from '../../context/cartContext';
 import CartSummary from './cartSummary';
 
-const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveProduct }) => {
+const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveProduct, addApprovedToCart }) => {
     const { carts } = useContext(CartContext);
 
     //filters approved products in approved carts
     const approveCarts = () => {
         const x = carts.map((cart) => ({
             ...cart,
-            products: cart.products.filter((product) => cart.isApproved && cart.isInCart && product.isApproved)
+            products: cart.products.filter((product) => cart.isApproved && product.isApproved)
         }));
         const y = x.map((cart) =>
-            cart.products.filter((product) => product.isApproved === false).length !== 0 && cart.isApproved === true
+            cart.products.filter((product) => product.isApproved === true).length !== 0 && cart.isApproved === true
                 ? { ...cart, isInCart: true }
                 : { ...cart }
         );
@@ -24,9 +24,7 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
     const discardCarts = () => {
         return carts.map((cart) => ({
             ...cart,
-            products: cart.products.filter(
-                (product) => product.isApproved === false || cart.isApproved === false || cart.isInCart === false
-            )
+            products: cart.products.filter((product) => product.isApproved === false || cart.isApproved === false)
         }));
     };
 
@@ -63,7 +61,6 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
     useEffect(() => {
         const x = approveCarts().filter((cart) => cart.id === displayApprovedCart.id)[0];
         const y = discardCarts().filter((cart) => cart.id === displayDiscardedCart.id)[0];
-
         setDisplayApprovedCart(x);
         setDisplayDiscardedCart(y);
     }, [carts]);

@@ -1,0 +1,32 @@
+$red-color: red;
+$light-blue-color: rgb(14, 124, 241);
+
+.app {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    gap: 16px;
+    div {
+        margin-top: 10px;
+    }
+}
+
+
+.app-loader {
+    display: flex;
+    margin-top: 300px;
+    align-items: center;
+    justify-content: center;
+    height:100%;
+    color: $light-blue-color;
+    svg {
+        width: 5%;
+        height: 5%;
+        fill:$red-color;
+        animation: spin 1s infinite linear;
+        @keyframes spin {
+            0% {-webkit-transform: rotate(0deg);}
+            100% {-webkit-transform: rotate(360deg);}
+        }
+    }
+}

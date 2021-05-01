@@ -20,6 +20,7 @@ interface IComponentProps {
     setFeedback: Dispatch<SetStateAction<string>>;
     approveProduct: (productId: number, cartId: number) => void;
     approveCart: (selectedCart: ICart) => void;
+    addToCart: () => void;
 }
 
 interface IFinalCartProps {
@@ -27,6 +28,7 @@ interface IFinalCartProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     approveCart: (selectedCart: ICart) => void;
     approveProduct: (productId: number, cartId: number) => void;
+    addApprovedToCart: (approvedCart: ICart) => void;
 }
 
 interface ISummaryProps {

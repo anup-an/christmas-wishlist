@@ -5,7 +5,14 @@ import CartContext from '../../context/cartContext';
 import { selectMinProduct } from '../../functions/selectEqual';
 import FinalCart from '../modals/finalCart';
 
-const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedback, approveCart, approveProduct }) => {
+const Criterias: React.FC<IComponentProps> = ({
+    criteria,
+    setCriteria,
+    setFeedback,
+    approveCart,
+    approveProduct,
+    addToCart
+}) => {
     const { carts, setCarts } = useContext(CartContext);
     const list = localStorage.getItem('CartList');
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -17,6 +24,13 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
 
     const closeModal = () => {
         setIsOpen(false);
+    };
+
+    const addApprovedToCart = (approvedCart: ICart) => {
+        const x = carts.map((cart: ICart) =>
+            cart.id === approvedCart.id ? { ...cart, isInCart: approvedCart.isInCart } : { ...cart }
+        );
+        setCarts([...x]);
     };
 
     const oldCarts = list
@@ -145,6 +159,7 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
                     isOpen={isOpen}
                     approveCart={approveCart}
                     approveProduct={approveProduct}
+                    addApprovedToCart={addApprovedToCart}
                 />
             </Modal>
         </div>
