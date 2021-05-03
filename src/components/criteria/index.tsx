@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import CartContext from '../../context/cartContext';
 import { selectMinProduct } from '../../functions/selectEqual';
 import FinalCart from '../modals/finalCart';
+import '../../assets/Criteria.scss';
 
 const Criterias: React.FC<IComponentProps> = ({
     criteria,
@@ -89,41 +90,25 @@ const Criterias: React.FC<IComponentProps> = ({
     };
 
     return (
-        <div className="flex flex-row justify-between mx-10 items-center">
-            <div className="flex flex-row justify-center items-center m-2 space-x-4">
-                <div className=" text-center">Select cart products:</div>
-                <div className="flex flex-row justify-between space-x-4">
-                    <button
-                        onClick={selectFavourites}
-                        type="button"
-                        className="p-2 text-blue-400 hover:bg-blue-800 hover:text-white  text-sm w-20 border rounded shadow-lg border-blue-400 hover:border-blue-800 focus:outline-none"
-                    >
+        <div className="criteria">
+            <div>
+                <h1>Select cart products:</h1>
+                <div>
+                    <button onClick={selectFavourites} type="button">
                         Favorite
                     </button>
-                    <button
-                        onClick={() => optimizeEqualNumber(oldCarts)}
-                        type="button"
-                        className="p-2 text-blue-400 hover:bg-blue-800 hover:text-white  text-sm w-20 border rounded shadow-lg border-blue-400 hover:border-blue-800 focus:outline-none"
-                    >
+                    <button onClick={() => optimizeEqualNumber(oldCarts)} type="button">
                         Equal
                     </button>
-                    <button
-                        onClick={selectBehaved}
-                        type="button"
-                        className="p-2 text-blue-400 hover:bg-blue-800 hover:text-white  text-sm w-20 border rounded shadow-lg border-blue-400 hover:border-blue-800 focus:outline-none"
-                    >
+                    <button onClick={selectBehaved} type="button">
                         Behaved
                     </button>
                 </div>
-                <div className="text-red-500 text-sm">{criteria}</div>
+                <p>{criteria}</p>
             </div>
-            <button
-                onClick={openModal}
-                type="button"
-                className="group w-11 h-11 border-2 rounded border-blue-400 hover:bg-blue-800 hover:text-white hover:border-blue-800 flex items-center justify-center focus:outline-none"
-            >
-                <div className="absolute right-5 w-6 h-6 top-1 border rounded-full bg-red-500 text-white flex items-center justify-center">
-                    <div>
+            <button onClick={openModal} type="button">
+                <div className="counter">
+                    <h1>
                         {
                             carts.filter(
                                 (cart) =>
@@ -131,15 +116,9 @@ const Criterias: React.FC<IComponentProps> = ({
                                     cart.products.filter((product) => product.isApproved === true).length !== 0
                             ).length
                         }
-                    </div>
+                    </h1>
                 </div>
-                <svg
-                    className="w-7 h-7 text-blue-400 group-hover:text-white text-center"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -148,12 +127,7 @@ const Criterias: React.FC<IComponentProps> = ({
                     />
                 </svg>
             </button>
-            <Modal
-                isOpen={isOpen}
-                onRequestClose={closeModal}
-                overlayClassName="fixed inset-0 flex justify-center items-center bg-blue-800 bg-opacity-75"
-                className="relative bg-white overflow-y-auto rounded-lg focus:outline-none w-5/6"
-            >
+            <Modal isOpen={isOpen} onRequestClose={closeModal} overlayClassName="modal-overlay" className="modal">
                 <FinalCart
                     setIsOpen={setIsOpen}
                     isOpen={isOpen}

@@ -1,0 +1,104 @@
+@import 'App.scss';
+@mixin flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+@mixin button-style {
+    padding: 8px;
+    width:5.2rem;
+    color: $light-blue-color;
+    border: 1px solid; 
+    font-size: $small-font;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    &:hover {
+        background-color: $dark-blue-color;
+        color: white;
+        border: 1px solid $dark-blue-color;
+    }
+}
+
+
+.criteria {
+    @include flex-row;
+    margin-left: 2.25rem;
+    margin-right: 2.25rem;
+    svg {
+        width: 2.75rem;
+        height: 2.75rem;
+        color: $light-blue-color;
+        padding:6px;
+        border: 1px solid $light-blue-color;
+        border-radius:5px;
+        &:hover {
+            stroke:white;
+            background-color: $dark-blue-color;
+            border-color: $dark-blue-color;
+        }
+
+    }
+    div:first-of-type {
+        @include flex-row;
+        p {
+        color: $red-color;
+        margin-left: 2.25rem;
+        }
+        div:first-of-type {
+            @include flex-row;
+            button{
+                @include button-style;
+                margin-left:1rem;
+            }
+            
+        }
+    }
+}
+
+.counter {
+        position: absolute;
+        width: 1.5rem;
+        height: 1.5rem;
+        top:0.01rem;
+        right:1.3rem;
+        border: 1px;
+        border-radius: 50%;
+        color: white;
+        background-color: $red-color;
+        display: flex;
+        justify-content:center;
+        h1 {
+            margin-left: 6px;
+        }
+}
+
+.modal {
+    position: relative;
+    background-color: white;
+    overflow-y: auto;
+    border-radius: 5px;
+    width: 83%;
+    &:focus {
+        outline: none;
+    }
+}
+
+.modal-overlay {
+    position:fixed;
+    inset: 0px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($dark-blue-color, 0.8);
+}
+
+h1 {
+    font-size: $big-font;
+    line-height: 1rem;
+}
+
+p {
+    font-size: $small-font;
+}
