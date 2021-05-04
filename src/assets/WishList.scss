@@ -1,0 +1,181 @@
+@import 'App.scss';
+@import 'Criteria.scss';
+.WishList {
+    border: 1px solid $gray-color;
+    border-radius: 3px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    width:550px;
+    height:550px;
+}
+
+.ListHeader {
+    @include flex-row;
+    height: 60px;
+    padding: 10px;
+    > div:first-of-type {
+        padding: 4px;
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        h1 {
+           font-size:$big-font;
+           color: white;
+        }
+        div {
+            margin-left:5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: $yellow-color;
+            width: 2rem;
+            height: 2rem;
+            svg{
+                width:2rem;
+                height:2rem;
+            }
+        }
+    }
+
+    > div:nth-of-type(2){
+        svg{
+            width: 1.8rem;
+            height: 1.8rem;
+            color: white;
+            text-align: center;
+            }
+    }
+    > div:nth-of-type(3){
+        div {
+            display:flex;
+            flex-direction: row;
+        
+        p {
+            font-size: $small-font;
+            color: white;
+        }
+        button {
+            width: 1.7rem;
+            height: 1.7rem;
+            background-color: white;
+            margin-left: 4px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:focus{
+                outline: none;
+            }
+            svg{
+                width: 1.5rem;
+                height: 1.5rem;
+                color: $dark-blue-color;
+                }
+
+            }
+        }
+        }
+        
+    }
+
+
+
+.ListProducts {
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    > div:first-of-type{
+        display:grid;
+        grid-template-columns: repeat(4,1fr);
+        grid-column: span 4;
+        height: 2.5rem; 
+        align-items: center;       
+        p:first-of-type{
+            grid-column: span 3;
+            justify-self: center;
+            font-size: $small-font;
+        }
+        p:last-of-type{
+            justify-self: center;
+        }
+    }
+    
+    > div:last-of-type {
+        grid-column: span 4;
+        align-items: center;
+        > div {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            place-items: center;
+            border-bottom: 1px solid $gray-color;
+            height: 120px;
+            button {
+                width: 1.5rem;
+                height: 1.5rem;
+                border: 1px solid;
+                border-radius: 5px;
+                border-color: $light-blue-color;
+                background-color: white;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                &:focus{
+                    outline:none;
+                }
+                > svg {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    stroke-width: 5px;
+                    color: green;
+                }
+            }
+            img {
+                width: 50%;
+                justify-self: start;
+            }            
+            > div {
+                > div {
+                    svg {
+                        width: 1.2rem;
+                        height: 1.2rem;
+                        fill: $yellow-color;
+                    }
+                    p {
+                        font-size: $very-small-font;
+                        width: 200px;
+                    }
+                }
+            }
+            div:last-of-type{
+                justify-self: start;
+            }
+        }
+    }
+}
+
+.EmptyList {
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 547px;
+        height: 450px;
+        > svg {
+            width: 100px;
+            height: 100px;
+            color: $dark-blue-color;
+        }
+        > p {
+            font-size: $big-font;
+        }
+}
+
+.ListFooter{
+    grid-column: span 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-items: center;
+    div:first-of-type{
+        padding-top: 2px;
+        padding-bottom: 2px;
+        grid-column: span 3;
+    }
+    div:last-of-type{
+        grid-column: span 1;
+    }
+}

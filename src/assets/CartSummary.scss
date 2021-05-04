@@ -1,0 +1,27 @@
+@import 'App.scss';
+@import 'Criteria.scss';
+
+.CartSummary {
+    font-size: $big-font;
+    display: flex;
+    flex-direction: column;
+    h1:first-of-type{
+        margin-top: 15px;
+        font-weight: 700;
+        color: $red-color;
+        font-size: $big-font;
+    }
+    h1:last-of-type {
+        margin-top: 15px;
+        font-weight: 700;
+        color: $dark-blue-color;
+        font-size: $big-font;
+    }
+    button {
+        display: none;
+        @include button-style('blue');
+        margin-top: 15px;
+        width: 100%;
+    }
+
+}

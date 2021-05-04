@@ -1,0 +1,49 @@
+@import 'App.scss';
+@import 'Criteria.scss';
+
+@mixin grid {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1px;
+}
+
+.Summary {
+    > div:first-of-type {
+        margin-top: 24px;
+        background-color:$dark-blue-color;
+        color:white;
+        grid-column: span 3;
+        height: 2.5rem;
+        align-items: stretch;
+    }
+    > div:nth-of-type(2) {
+        display: grid;
+        justify-items: stretch;
+        border: 1px solid;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        > div:first-of-type {
+            @include grid;
+            font-weight: 500;
+            background-color: $gray-color;
+            height:2rem;
+        }
+        > div:nth-of-type(2){
+            grid-column: span 3;
+            > div {
+                @include grid;
+                padding: 6px;   
+                border-bottom: 1px solid $gray-color;
+
+            }
+        }
+        > div:last-of-type {
+            @include grid;
+            background-color: $gray-color;
+            font-weight: 500;
+            height: 2rem;
+
+
+        }
+    }
+}

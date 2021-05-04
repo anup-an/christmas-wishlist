@@ -1,5 +1,6 @@
 import React from 'react';
 import Summary from './summary';
+import './../../assets/CartSummary.scss';
 
 const findTotalNum = (carts: ICart[]) => {
     const num = carts.map((cart) => (cart.products.length !== 0 ? cart.products.length : 0)).reduce((a, b) => a + b);
@@ -57,7 +58,7 @@ const applyDiscount = (approvedCarts: ICart[]) => {
 
 const CartSummary: React.FC<ICartSummaryProps> = ({ approveCarts, discardCarts, approvedCarts }) => {
     return (
-        <div className="text-sm mx-4 flex flex-col space-y-4 mb-4">
+        <div className="CartSummary">
             <Summary
                 findTotalNum={findTotalNum}
                 findTotalSum={findTotalSum}
@@ -70,18 +71,9 @@ const CartSummary: React.FC<ICartSummaryProps> = ({ approveCarts, discardCarts, 
                 filterFunction={discardCarts}
                 isApproved={false}
             />
-            <div className="font-bold text-base text-red-500">
-                Discount = {applyDiscount(approvedCarts).toFixed(2)}{' '}
-            </div>
-            <div className="font-bold text-base text-blue-800">
-                You Pay: {(findTotalSum(approvedCarts) - applyDiscount(approvedCarts)).toFixed(2)}
-            </div>
-            <button
-                type="button"
-                className="p-2 border rounded ahadow-2xl border-blue-800 hover:bg-blue-800 text-lg hover:text-white"
-            >
-                Submit
-            </button>
+            <h1>Discount : {applyDiscount(approvedCarts).toFixed(2)} EUR </h1>
+            <h1>You Pay: {(findTotalSum(approvedCarts) - applyDiscount(approvedCarts)).toFixed(2)} EUR</h1>
+            <button type="button">Submit</button>
         </div>
     );
 };

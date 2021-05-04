@@ -5,20 +5,37 @@
     justify-content: space-between;
     align-items: center;
 }
-@mixin button-style {
+@mixin button-style ($button-color) {
     padding: 8px;
-    width:5.2rem;
+    width: 5.6rem;
+    @if $button-color == 'red' {
+    color: $red-color;
+    }
+
+    @if $button-color == 'blue' {
     color: $light-blue-color;
+    }
+    
     border: 1px solid; 
     font-size: $small-font;
     border-radius: 5px;
     background-color: white;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    &:hover {
-        background-color: $dark-blue-color;
-        color: white;
-        border: 1px solid $dark-blue-color;
+    @if $button-color == 'blue' {
+        &:hover {
+            background-color: $dark-blue-color;
+            color: white;
+            border: 1px solid $dark-blue-color;
+        }
     }
+    @if $button-color == 'red' {
+        &:hover {
+        background-color: $red-color;
+        color: white;
+        border: 1px solid $red-color;
+    }
+}
+
 }
 
 
@@ -49,7 +66,7 @@
         div:first-of-type {
             @include flex-row;
             button{
-                @include button-style;
+                @include button-style('blue');
                 margin-left:1rem;
             }
             
@@ -79,7 +96,8 @@
     background-color: white;
     overflow-y: auto;
     border-radius: 5px;
-    width: 83%;
+    width: 85%;
+    height: 88%;
     &:focus {
         outline: none;
     }

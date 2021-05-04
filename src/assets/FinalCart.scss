@@ -1,0 +1,168 @@
+@import 'App.scss';
+@import 'Criteria.scss';
+
+.CloseModal {
+    > button {
+        border: 1px solid black;
+        border-color: $red-color;
+        border-radius: 5px;
+        width: 25px;
+        height: 25px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:focus{
+            outline: none;
+        }
+        &:hover{
+            background-color: $red-color;            
+        }
+    }
+}
+.Carts {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+    margin-left: 1 rem;
+}
+
+.EmptyCart {
+    color: $red-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: $big-font;
+    height: 100%;
+    > div:first-of-type {
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        > svg {
+            width: 150px;
+            height: 150px;
+            color: $dark-blue-color;
+        }
+        > p {
+            font-size: $big-font;
+            color: $red-color;
+        }
+    }
+    div:last-of-type {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        > p {
+            font-size: $big-font;
+            color: $red-color;
+
+        }
+        > button {
+            margin-left: 10px;
+            @include button-style('blue');
+            width: 100px;
+        }
+    }
+}
+
+.ApprovedCart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    > p {
+        text-align:center
+    }
+    > div {
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        > div {
+            display: flex;
+            flex-direction: row;
+            > div:first-of-type {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                > button {
+                    border: 1px solid $gray-color;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: $gray-color;
+                    &:hover {
+                        background-color: $dark-blue-color;
+                        color: white;
+                    }
+                    &:focus {
+                        outline: none;
+                    }
+                    > svg {
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
+            }
+            > div:last-of-type{
+                    display: flex;
+                    align-items: center;
+            }
+        }
+    }
+}
+
+.DiscardedCart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    > p {
+    text-align: center;
+    }
+    > div:first-of-type {
+        display: flex;
+        flex-direction: row;
+        > div:first-of-type {
+            display: flex;
+            align-items: center;
+        }
+        > div:last-of-type {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            > button {
+                border: 1px solid $gray-color;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: $gray-color;
+                visibility: visible;
+                &:hover {
+                    background-color: $dark-blue-color;
+                    color: white;
+                }
+                &:focus {
+                    outline: none;
+                }
+                > svg {
+                width: 25px;
+                height: 25px;
+                }
+            }
+
+        }
+    }
+}
+
+.FinalSummary {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: 100%
+}

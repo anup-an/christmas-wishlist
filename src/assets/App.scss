@@ -2,14 +2,17 @@ $red-color: red;
 $light-blue-color: rgb(14, 124, 241);
 $big-font: 1.1rem;
 $small-font: 1rem;
+$very-small-font: 0.9rem;
 $dark-blue-color: rgb(25, 25, 157);
+$yellow-color: rgb(212, 167, 42);
+$gray-color: rgba(229, 231, 235, 1);
 
 .app {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
     gap: 16px;
-    div {
+    > div {
         margin-top: 10px;
     }
 }

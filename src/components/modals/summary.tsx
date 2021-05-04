@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useContext, useState } from 'react';
 import CartContext from '../../context/cartContext';
+import './../../assets/Summary.scss';
 
 const Summary: React.FC<ISummaryProps> = ({ findTotalNum, findTotalSum, filterFunction, isApproved }) => {
     const { carts } = useContext(CartContext);
@@ -22,28 +23,28 @@ const Summary: React.FC<ISummaryProps> = ({ findTotalNum, findTotalSum, filterFu
     }, [carts]);
 
     return (
-        <div>
-            <div className="bg-blue-800 text-white col-span-3 p-2 text-base">
-                {isApproved ? 'Approved cart' : 'Discarded cart'}
-            </div>
-            <div className="grid grid-cols-3 justify-items-stretch border shadow-lg divide-y">
-                <div className="col-span-3 grid grid-cols-3 bg-gray-200 w-full p-1 font-medium">
+        <div className="Summary">
+            <div>{isApproved ? 'Approved cart' : 'Discarded cart'}</div>
+            <div>
+                <div>
                     <div>Name</div>
                     <div>Gifts</div>
                     <div>Sum</div>
                 </div>
-                {filterCarts.map((cart) => (
-                    <div className="col-span-3 grid grid-cols-3 p-1">
-                        <div>Child {cart.id}</div>
-                        <div>{cart.products.length}</div>
+                <div>
+                    {filterCarts.map((cart) => (
                         <div>
-                            {cart.products.length !== 0
-                                ? cart.products.map((product) => parseFloat(product.price)).reduce((a, b) => a + b)
-                                : ''}
+                            <div>Child {cart.id}</div>
+                            <div>{cart.products.length}</div>
+                            <div>
+                                {cart.products.length !== 0
+                                    ? cart.products.map((product) => parseFloat(product.price)).reduce((a, b) => a + b)
+                                    : ''}
+                            </div>
                         </div>
-                    </div>
-                ))}
-                <div className="col-span-3 grid grid-cols-3 bg-gray-200 w-full p-1 font-medium">
+                    ))}
+                </div>
+                <div>
                     <div>Total :</div>
                     <div>{filterCarts.length !== 0 ? findTotalNum(filterCarts) : ''}</div>
 

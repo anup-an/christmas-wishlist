@@ -1,0 +1,39 @@
+@import 'App.scss';
+@import 'Criteria.scss';
+
+.WishListArray {
+    display: flex;
+    flex-direction: column;
+    margin-left:2.25rem;
+    margin-right:2.25rem;
+    margin-top: 20px;
+    > div:first-of-type{
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 40px;
+
+        > button {
+            @include button-style('blue');
+            margin-left: 1rem;
+            &:focus {
+                outline: none;
+            }
+        }
+        > button:first-of-type{
+            @include button-style('red');
+            margin-left: 0rem;
+        }
+        > p {
+            color: $red-color;
+            margin-left: 2.25rem;
+        }
+
+    }
+    > div:nth-of-type(2) {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        grid-gap: 20px;
+        margin-top: 10px;
+    }
+}
