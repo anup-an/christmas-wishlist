@@ -11,7 +11,7 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
         <div className="border rounded shadow-lg text-xs divide-y h-100 w-106">
             <div
                 className={`flex flex-row justify-between items-center ${
-                    cart.isApproved ? 'bg-blue-800' : 'bg-blue-400'
+                    cart.isInCart ? 'bg-blue-800' : 'bg-blue-400'
                 } p-4 h-14`}
             >
                 <div className="flex flex-row space-x-2">
@@ -58,7 +58,7 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                         </svg>
                     )}
                 </div>
-                {cart.isInCart && cart.isApproved ? (
+                {cart.isInCart ? (
                     <div>
                         <svg
                             className="w-6 h-6 text-white text-center"
@@ -80,13 +80,13 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                 )}
 
                 <div className="flex flex-row space-x-4 items-center">
-                    {cart.isApproved ? (
+                    {cart.isInCart ? (
                         <div
                             className={`flex flex-row space-x-1 items-center ${
                                 cart.products.length === 0 ? 'hidden' : 'block'
                             }`}
                         >
-                            <div className="text-xs text-white">Click to deselect</div>
+                            <div className="text-xs text-white">Click to remove</div>
                             <button
                                 onClick={() => approveCart(cart)}
                                 className="w-5 h-5 border rounded bg-white flex items-center justify-center focus:outline-none"
@@ -113,7 +113,7 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                                 cart.products.length === 0 ? 'inivisible' : 'visible'
                             }`}
                         >
-                            <div className="text-xs text-white">Click to select</div>
+                            <div className="text-xs text-white">Click to add</div>
                             <button
                                 onClick={() => approveCart(cart)}
                                 className="w-5 h-5 border rounded bg-white focus:outline-none"

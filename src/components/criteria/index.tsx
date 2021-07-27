@@ -22,21 +22,21 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
     const oldCarts = list
         ? JSON.parse(list).map((cart: ICart) => ({
               ...cart,
-              isApproved: true
+              isInCart: true
           }))
         : '';
     // selects only favourite gifts from all of the carts
     const selectFavourites = () => {
         const favourites = carts.map((cart) => ({
             ...cart,
-            isApproved: true,
+            isInCart: true,
             products: cart.products.map((product) =>
                 product.isFavourite === true ? { ...product, isApproved: true } : { ...product, isApproved: false }
             )
         }));
         setCarts([...favourites]);
         setFeedback('');
-        setCriteria('Only favourite gifts selected from the all the wishlists');
+        setCriteria('Only favourite gifts from the all the wishlists added to carts');
     };
 
     // selects all gifts of only well-behaved children from their wishlists
@@ -46,14 +46,14 @@ const Criterias: React.FC<IComponentProps> = ({ criteria, setCriteria, setFeedba
             cart.isWellBehaved === true
                 ? {
                       ...cart,
-                      isApproved: true,
+                      isInCart: true,
                       products: cart.products.map((product) => ({ ...product, isApproved: true }))
                   }
                 : { ...cart, isApproved: false }
         );
         setCarts([...wellbehaved]);
         setFeedback('');
-        setCriteria('Wishlist of only well behaved children approved.');
+        setCriteria('Wishlist of only well behaved children added to carts.');
     };
 
     //selects equal number of gifts from the wishlists

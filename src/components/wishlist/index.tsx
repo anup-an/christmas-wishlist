@@ -13,8 +13,13 @@ const WishListArray: React.FC<IComponentProps> = ({
 
     // clears all selections and clears carts
     const resetCarts = () => {
-        const list = localStorage.getItem('CartList');
-        list ? setCarts(JSON.parse(list)) : '';
+        const editedCarts = carts.map((cart) => ({
+            ...cart,
+            isInCart: false,
+            products: cart.products.map((product) => ({ ...product, isApproved: false }))
+        }));
+        setCarts([...editedCarts]);
+        setCriteria('');
         setFeedback('All wishlists and product selections cleared ');
     };
 
@@ -23,12 +28,12 @@ const WishListArray: React.FC<IComponentProps> = ({
     const approveAll = () => {
         const editedCarts = carts.map((cart) => ({
             ...cart,
-            isApproved: true,
+            isInCart: true,
             products: cart.products.map((product) => ({ ...product, isApproved: true }))
         }));
         setCarts([...editedCarts]);
         setCriteria('');
-        setFeedback('All wishlists and their products selected');
+        setFeedback('All wishlists and their products added to cart');
     };
 
     // adds selected wishlists to cart
@@ -60,15 +65,7 @@ const WishListArray: React.FC<IComponentProps> = ({
                         onClick={approveAll}
                         className="p-2 text-blue-400 hover:bg-blue-800 hover:text-white  text-sm w-20 border rounded shadow-lg border-blue-400 hover:border-blue-800 focus:outline-none"
                     >
-                        Select all
-                    </button>
-                    <button
-                        type="button"
-                        onClick={addToCart}
-                        className="p-2 hover:bg-blue-800 hover:text-white w-20 text-sm text-blue-400 border border-blue-400 hover:border-blue-800 rounded shadow-lg focus:outline-none"
-                    >
-                        {' '}
-                        Add
+                        Add all
                     </button>
                 </div>
                 <div className="text-sm text-red-500">{feedback}</div>

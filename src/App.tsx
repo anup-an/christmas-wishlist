@@ -32,17 +32,17 @@ const App = (): JSX.Element => {
 
         for (let i = 0; i < myCarts.length; i++) {
             if (selectedCart.id == myCarts[i].id && arrLength !== 0) {
-                if (myCarts[i].isApproved === true) {
+                if (myCarts[i].isInCart === true) {
                     myCarts[i] = {
                         ...myCarts[i],
-                        isApproved: false,
-                        products: myCarts[i].products.map((product) => ({ ...product, isApproved: false }))
+                        isInCart: false
+                        //products: myCarts[i].products.map((product) => ({ ...product, isApproved: false }))
                     };
-                    setFeedback(`Cart of child ${selectedCart.id} is unselected`);
-                } else if (myCarts[i].isApproved === false) {
-                    myCarts[i] = { ...myCarts[i], isApproved: true };
+                    setFeedback(`Wishlist of child ${selectedCart.id} is removed from the cart`);
+                } else if (myCarts[i].isInCart === false) {
+                    myCarts[i] = { ...myCarts[i], isInCart: true };
 
-                    setFeedback(`Cart of child ${selectedCart.id}  is selected. Click add button to add it to cart`);
+                    setFeedback(`Wishlist of child ${selectedCart.id}  is added to the cart.`);
                 }
             } else if (selectedCart.id == myCarts[i].id && arrLength == 0) {
                 setFeedback(
@@ -113,7 +113,7 @@ const App = (): JSX.Element => {
                     setLoading(false);
 
                     setCarts([...updatedData]);
-                }, 1000);
+                }, 2000);
             } catch (error) {
                 console.log(error);
             }
