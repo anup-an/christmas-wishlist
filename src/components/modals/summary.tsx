@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useContext, useState } from 'react';
 import CartContext from '../../context/cartContext';
 
@@ -7,18 +6,7 @@ const Summary: React.FC<ISummaryProps> = ({ findTotalNum, findTotalSum, filterFu
     const [filterCarts, setFilterCarts] = useState<ICart[]>([]);
 
     useEffect(() => {
-        const filterArr = filterFunction();
-        // get data from fakestore api
-        (async () => {
-            let cartArr: ICart[] = [];
-            for (let i = 0; i < filterArr.length; i++) {
-                const response = await axios.patch(`https://fakestoreapi.com/carts/${filterArr[i].id}`, {
-                    ...filterArr[i]
-                });
-                cartArr = [...cartArr, { ...response.data }];
-            }
-            setFilterCarts([...cartArr]);
-        })();
+        setFilterCarts([...filterFunction()]);
     }, [carts]);
 
     return (
