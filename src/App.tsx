@@ -15,7 +15,6 @@ const App = (): JSX.Element => {
     const getProduct = async (product: IProduct) => {
         try {
             const p = await axios.get(`https://fakestoreapi.com/products/${product.productId}`);
-
             product.title = p.data.title;
             product.image = p.data.image;
             product.price = p.data.price;
@@ -82,16 +81,16 @@ const App = (): JSX.Element => {
         (async (): Promise<void> => {
             try {
                 const data = await axios.get('https://fakestoreapi.com/carts?limit=5');
+                localStorage.setItem('Carts', JSON.stringify(data.data));
 
                 const cartData = data.data.map((cart: ICart) => {
                     const productArray = cart.products.map((product) => getProduct(product));
+                    /* Promise.all(productArray); */
                     (async function () {
                         for await (const val of productArray) {
                             return val;
                         }
                     })();
-                    setLoading(false);
-
                     return {
                         ...cart
                     };
@@ -111,8 +110,10 @@ const App = (): JSX.Element => {
                         }))
                     }));
                     localStorage.setItem('CartList', JSON.stringify(updatedData));
+                    setLoading(false);
+
                     setCarts([...updatedData]);
-                }, 3000);
+                }, 1000);
             } catch (error) {
                 console.log(error);
             }
