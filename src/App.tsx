@@ -69,7 +69,7 @@ const App = (): JSX.Element => {
         );
         const updateByProduct = updatedCarts.map((cart) =>
             cart.id === cartId && cart.products.filter((product) => product.isApproved === true).length === 0
-                ? { ...cart, isApproved: false }
+                ? { ...cart, isInCart: false }
                 : { ...cart }
         );
         setCarts([...updateByProduct]);

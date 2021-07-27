@@ -83,7 +83,10 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                     {cart.isInCart ? (
                         <div
                             className={`flex flex-row space-x-1 items-center ${
-                                cart.products.length === 0 ? 'hidden' : 'block'
+                                cart.products.length === 0 ||
+                                cart.products.filter((product) => product.isApproved == true).length == 0
+                                    ? 'hidden'
+                                    : 'block'
                             }`}
                         >
                             <div className="text-xs text-white">Click to remove</div>
@@ -110,7 +113,7 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                     ) : (
                         <div
                             className={`flex flex-row space-x-1 items-center ${
-                                cart.products.length === 0 ? 'inivisible' : 'visible'
+                                cart.products.length === 0 ? 'hidden' : 'block'
                             }`}
                         >
                             <div className="text-xs text-white">Click to add</div>

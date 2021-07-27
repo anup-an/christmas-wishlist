@@ -10,10 +10,10 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
     const approveCarts = () => {
         const x = carts.map((cart) => ({
             ...cart,
-            products: cart.products.filter((product) => cart.isApproved && cart.isInCart && product.isApproved)
+            products: cart.products.filter((product) => cart.isInCart && product.isApproved)
         }));
         const y = x.map((cart) =>
-            cart.products.filter((product) => product.isApproved === false).length !== 0 && cart.isApproved === true
+            cart.products.filter((product) => product.isApproved === false).length !== 0 && cart.isInCart === true
                 ? { ...cart, isInCart: true }
                 : { ...cart }
         );
@@ -24,9 +24,7 @@ const FinalCart: React.FC<IFinalCartProps> = ({ setIsOpen, approveCart, approveP
     const discardCarts = () => {
         return carts.map((cart) => ({
             ...cart,
-            products: cart.products.filter(
-                (product) => product.isApproved === false || cart.isApproved === false || cart.isInCart === false
-            )
+            products: cart.products.filter((product) => product.isApproved === false || cart.isInCart === false)
         }));
     };
 
