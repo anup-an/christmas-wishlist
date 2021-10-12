@@ -7,10 +7,11 @@ import CartContext from './context/cartContext';
 
 const App = (): JSX.Element => {
     const [carts, setCarts] = useState<ICart[]>([]);
+    console.log(carts, 'state cart');
     const [feedback, setFeedback] = useState<string>('');
     const [criteria, setCriteria] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
-
+    const [products, setProducts] = useState<any[]>([]);
     //fetches data from api
     const getProduct = async (product: IProduct) => {
         try {
@@ -81,39 +82,53 @@ const App = (): JSX.Element => {
         (async (): Promise<void> => {
             try {
                 const data = await axios.get('https://fakestoreapi.com/carts?limit=5');
+                setCarts(data.data);
                 localStorage.setItem('Carts', JSON.stringify(data.data));
 
-                const cartData = data.data.map((cart: ICart) => {
-                    const productArray = cart.products.map((product) => getProduct(product));
+                const cartData2 = data.data.map((cart: ICart) => {
+                    return cart.products.map((product) => getProduct(product));
                     /* Promise.all(productArray); */
-                    (async function () {
-                        for await (const val of productArray) {
-                            return val;
-                        }
-                    })();
-                    return {
-                        ...cart
-                    };
+                    // (async function () {
+                    //     for await (const val of productArray) {
+                    //         return val;
+                    //     }
+                    // })();
+                    // return {
+                    //     ...cart
+                    // };
                 });
-
-                // added additional properties to the cart and product arrays to facilitate the selection and approval of carts and products
-                setTimeout(function () {
-                    const updatedData = cartData.map((cart: ICart, cartIndex: number) => ({
+                const updatedData = Promise.all(cartData2.flat(2)).then((data) =>
+                    data.map((cart: any, cartIndex: any) => ({
                         ...cart,
                         isApproved: false,
                         isWellBehaved: cartIndex === 1 || cartIndex === 3 ? true : false,
                         isInCart: false,
-                        products: cart.products.map((product, productIndex) => ({
+                        products: cart?.products?.map((product: any, productIndex: any) => ({
                             ...product,
                             isApproved: false,
                             isFavourite: productIndex === 0 ? true : false
                         }))
-                    }));
-                    localStorage.setItem('CartList', JSON.stringify(updatedData));
-                    setLoading(false);
+                    }))
+                );
+                console.log(await updatedData, 'updated data');
+                // added additional properties to the cart and product arrays to facilitate the selection and approval of carts and products
+                // setTimeout(function () {
+                // const updatedData = cartData?.map((cart: ICart, cartIndex: number) => ({
+                //     ...cart,
+                //     isApproved: false,
+                //     isWellBehaved: cartIndex === 1 || cartIndex === 3 ? true : false,
+                //     isInCart: false,
+                //     products: cart?.products?.map((product, productIndex) => ({
+                //         ...product,
+                //         isApproved: false,
+                //         isFavourite: productIndex === 0 ? true : false
+                //     }))
+                // }));
+                localStorage.setItem('CartList', JSON.stringify([...(await updatedData)]));
+                setLoading(false);
 
-                    setCarts([...updatedData]);
-                }, 2000);
+                setProducts([...(await updatedData)]);
+                // }, 2000);
             } catch (error) {
                 console.log(error);
             }

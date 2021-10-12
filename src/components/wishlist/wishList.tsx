@@ -83,7 +83,7 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                     {cart.isInCart ? (
                         <div
                             className={`flex flex-row space-x-1 items-center ${
-                                cart.products.length === 0 ||
+                                cart?.products?.length === 0 ||
                                 cart.products.filter((product) => product.isApproved == true).length == 0
                                     ? 'hidden'
                                     : 'block'
@@ -113,7 +113,7 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                     ) : (
                         <div
                             className={`flex flex-row space-x-1 items-center ${
-                                cart.products.length === 0 ? 'hidden' : 'block'
+                                cart?.products?.length === 0 ? 'hidden' : 'block'
                             }`}
                         >
                             <div className="text-xs text-white">Click to add</div>
@@ -128,14 +128,14 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
             <div className="grid grid-cols-4">
                 <div
                     className={`col-span-4 grid grid-cols-4 py-2 border-b bg-gray-100 justify-items-stretch ${
-                        cart.products.length === 0 ? 'hidden' : 'block'
+                        cart?.products?.length === 0 ? 'hidden' : 'block'
                     }`}
                 >
                     <div className="col-span-3 justify-self-center">Product</div>
                     <div className="justify-self-center">Price</div>
                 </div>
 
-                {cart.products.length === 0 ? (
+                {cart?.products?.length === 0 ? (
                     <div className="col-span-4 place-content-center row-span-2">
                         <div className="flex flex-row space-x-4 items-center justify-center">
                             <svg
@@ -160,12 +160,12 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
                 )}
 
                 <div className="divide-y col-span-4">
-                    {cart.products.map((product) => (
+                    {cart?.products?.map((product) => (
                         <div
                             key={product.productId}
                             className="p-2 grid grid-cols-4 justify-items-stretch place-items-center"
                         >
-                            {product.isApproved ? (
+                            {product?.isApproved ? (
                                 <button
                                     onClick={() => approveProduct(product.productId, cart.id)}
                                     className="w-5 h-5 border rounded border-blue-400 shadow-lg bg-white focus:outline-none"
@@ -214,13 +214,13 @@ const WishList: React.FC<IWishListProps> = ({ cart, approveCart, approveProduct 
             </div>
             <div
                 className={`relative col-span-4 grid grid-cols-4 place-items-center ${
-                    cart.products.length === 0 ? 'hidden' : 'block'
+                    cart?.products?.length === 0 ? 'hidden' : 'block'
                 }`}
             >
                 <div className="py-2 col-span-3">Total price</div>
                 <div className="col-span-1">
-                    {cart.products.length !== 0
-                        ? cart.products.map((product) => parseFloat(product.price)).reduce((a, b) => a + b)
+                    {cart?.products?.length !== 0
+                        ? cart?.products?.map((product) => parseFloat(product.price)).reduce((a, b) => a + b)
                         : ''}
                 </div>
             </div>
